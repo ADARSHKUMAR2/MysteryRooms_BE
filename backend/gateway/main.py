@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
-    title="KBC API Gateway",
+    title="Mystery Rooms API Gateway",
     description="Central entry point for Unity client"
 )
 

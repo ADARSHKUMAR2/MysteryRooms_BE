@@ -31,7 +31,7 @@ async def lifespan(app: FastAPI):
     # Shutdown logic (cleanup connections, etc.)
     print("🛑 Auth Service Shutting Down")
 
-app = FastAPI(lifespan=lifespan, title="KBC Auth Service")
+app = FastAPI(lifespan=lifespan, title="Mystery Rooms Auth Service")
 
 # Register routes
 app.include_router(auth_routes.router)
@@ -46,6 +46,10 @@ async def auth_root():
         ]
     }
 
+@app.get("/health")
+async def health_check():
+    """Public endpoint for monitoring"""
+    return {"status": "healthy"}
 
 if __name__ == "__main__":
     # Run the server on port 8001 with auto-reload enabled

@@ -11,11 +11,11 @@ async def get_database(document_models: list):
     Initializes the database connection and Beanie ODM.
     """
     # Use MONGODB_URI to match your .env file
-    mongo_uri = os.getenv("MONGO_URI")
+    mongo_uri = os.getenv("MONGODB_URI")
     if not mongo_uri:
         raise ValueError("❌ MONGODB_URI is not set in the .env file!")
 
-    db_name = os.getenv("MONGO_DB_NAME", "kbc_ai_db")
+    db_name = os.getenv("MONGO_DB_NAME", "mysteryRooms_ai_db")
     
     # Create Motor client with uuid representation (fixes many Beanie issues)
     client = AsyncIOMotorClient(
