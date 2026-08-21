@@ -1,4 +1,4 @@
-from fastapi import Request, HTTPException
+from fastapi import Request, HTTPException, Response
 from backend.gateway.utils.http_client import ServiceProxy
 import os
 
@@ -67,7 +67,11 @@ class ProxyController:
             )
             
             # Return the same response from the service
-            return response.json()
+            return Response(
+                content=response.content,
+                status_code=response.status_code,
+                media_type=response.headers.get("content-type", "application/json")
+            )
             
         except Exception as e:
             raise HTTPException(status_code=502, detail=f"Service unavailable: {str(e)}")

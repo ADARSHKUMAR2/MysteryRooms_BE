@@ -8,6 +8,8 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 class TokenVerifyRequest(BaseModel):
     """Unity sends this"""
     firebase_token: str
+    email: str | None = None        
+    display_name: str | None = None
     
 class UserResponse(BaseModel):
     """Backend returns this"""
@@ -50,7 +52,11 @@ async def verify_token(request: TokenVerifyRequest):
     );
     ```
     """
-    user = await AuthController.verify_and_sync_user(request.firebase_token)
+    user = await AuthController.verify_and_sync_user(
+        request.firebase_token,
+        provided_email=request.email,
+        provided_name=request.display_name
+        )
     
     return UserResponse(
         firebase_uid=user.firebase_uid,

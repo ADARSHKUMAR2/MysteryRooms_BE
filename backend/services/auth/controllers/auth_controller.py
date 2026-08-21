@@ -9,7 +9,7 @@ class AuthController:
     """
     
     @staticmethod
-    async def verify_and_sync_user(firebase_token: str) -> User:
+    async def verify_and_sync_user(firebase_token: str, provided_email: str | None = None, provided_name: str | None = None) -> User:
         """
         Main authentication flow:
         1. Verify Firebase token (is this user legit?)
@@ -30,8 +30,8 @@ class AuthController:
             
             # Extract user info from Firebase token
             firebase_uid = decoded_token['uid']
-            email = decoded_token.get('email')
-            display_name = decoded_token.get('name')
+            email = decoded_token.get('email') or provided_email
+            display_name = decoded_token.get('name') or provided_name
             photo_url = decoded_token.get('picture')
             
             # Step 2: Check if user exists in MongoDB
