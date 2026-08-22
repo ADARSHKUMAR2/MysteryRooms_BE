@@ -9,6 +9,7 @@ from ..models.mystery import MysteryDocument
 from datetime import datetime
 import uuid
 from typing import List
+from backend.services.auth.models.user import User
 
 class SessionController:
     """Controller for game session operations"""
@@ -24,13 +25,15 @@ class SessionController:
             raise HTTPException(status_code=404, detail="Mystery not found")
         
         # Create player progress objects
-        players = [
-            PlayerProgress(
-                user_id=player_id,
-                username=f"Player_{player_id[:8]}"  # TODO: Fetch real username from auth service
+        players = []
+        for player_id in request.player_ids:
+            username = await self._get_username(player_id)
+            players.append(
+                PlayerProgress(
+                    user_id=player_id,
+                    username=username
+                )
             )
-            for player_id in request.player_ids
-        ]
         
         # Create session
         session = GameSession(
@@ -50,7 +53,7 @@ class SessionController:
         
         print(f"✅ Game session {session.session_id} started")
         return session
-    
+
     async def update_session(self, request: UpdateSessionRequest) -> GameSession:
         """Update session progress"""
         
@@ -154,11 +157,34 @@ class SessionController:
         ).sort("-created_at").limit(limit).to_list()
         
         return [GameSession(**s.model_dump()) for s in sessions]
-    
+
+    async def _get_username(self, user_id: str) -> str:
+        """
+        Fetch username from auth service or fallback to user_id prefix
+        """
+        try:
+            # Query the users collection for the player's profile
+            user_profile = await User.find_one(
+                User.firebase_uid == user_id
+            )
+            
+            if user_profile and user_profile.display_name:
+                return user_profile.display_name
+            elif user_profile and user_profile.email:
+                # Fallback to email prefix if no display name
+                return user_profile.email.split('@')[0]
+                
+            # Final fallback if user document isn't found
+            return f"Player_{user_id[:8]}"
+        
+        except Exception as e:
+            print(f"⚠️ Failed to fetch username for {user_id}: {e}")
+            return f"Player_{user_id[:8]}"
+
     async def _update_player_stats(self, session: GameSessionDocument):
         """Update player statistics after game completion"""
         for player in session.players:
-            # Find or create player stats
+            # Update Detailed Analytics (player_stats collection)
             stats = await PlayerStatsDocument.find_one(
                 PlayerStatsDocument.user_id == player.user_id
             )
@@ -203,3 +229,33 @@ class SessionController:
             stats.updated_at = datetime.utcnow()
             
             await stats.save()
+            print(f"📊 Updated detailed PlayerStats for {player.user_id}")
+
+            # ---------------------------------------------------------
+            # 2. Update Core User Profile (users collection)
+            # ---------------------------------------------------------
+            user = await User.find_one(User.firebase_uid == player.user_id)
+            
+            if user:
+                user.games_played += 1
+                
+                if session.status == GameStatus.COMPLETED:
+                    user.games_won += 1
+                    user.coins += 50  # Reward for escaping
+                    
+                # Calculate simple score
+                base_score = 1000
+                time_penalty = session.completion_time_seconds or 0
+                hint_penalty = session.total_hints_used * 50
+                earned_score = max(10, base_score - time_penalty - hint_penalty)
+                
+                if session.status == GameStatus.COMPLETED:
+                    user.total_score += earned_score
+                
+                user.last_login = datetime.utcnow()
+                
+                await user.save()
+                print(f"✅ Updated core User profile for {user.display_name or user.email}")
+            else:
+                print(f"⚠️ Core User profile not found for {player.user_id}")
+
