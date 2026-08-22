@@ -1,50 +1,63 @@
-# Project Phases & Unity Integration
+# AI-Powered 3D Mystery Rooms - Project Phases
 
-### **Phase 1: Foundation & Authentication (Current Phase)**
-*Goal: Establish the secure microservice architecture and allow players to create accounts and log in.*
-* **Backend Tasks:**
-  * Scaffold FastAPI services (Gateway, Auth, Game) using `uv` and Python 3.12+.
-  * Configure MongoDB Atlas using Motor and Beanie ODM.
-  * Build the **Auth Service**: `/register` and `/login` routes, generating JWT access tokens.
-  * Build the **API Gateway**: Reverse-proxy requests to the Auth service and validate JWT tokens using middleware before passing requests downstream.
-* **Unity Integration:**
-  * Initialize the 2D Unity Project.
-  * Create the UI flows for the Start Menu, Login Panel, and Registration Panel.
-  * Implement a `NetworkManager` C# script using `UnityWebRequest` to communicate with the Gateway (`http://localhost:8000/auth/login`).
-  * Store the returned JWT securely using `PlayerPrefs` or secure local storage to keep the player logged in.
+The core promise of this project: **No mystery is ever the same twice.**
+The game is an AI-powered multiplayer 3D mystery/escape-room where the AI acts as a Mystery Generator and Game Director.
 
-### **Phase 2: Core Gameplay Loop (Predefined AI Experts)**
-*Goal: Build the trivia system where experts give hardcoded/mocked advice.*
-* **Backend Tasks:**
-  * Build the **Game Service**: Connect it to the API Gateway.
-  * Create a static question bank (e.g., loaded from a JSON file or MongoDB collection).
-  * Build the Game Session initialization endpoint: assign 3 experts to the user (e.g., Historian, Risky, Skeptical).
-  * Generate hardcoded expert dialogue and confidence percentages for each question.
-* **Unity Integration:**
-  * Build the Main Game Scene: UI for the Question, 4 Options, and 3 Expert Avatars.
-  * Fetch the question and the expert advice payloads from the backend.
-  * Build dialogue boxes/speech bubbles for the experts so the player can read their advice before selecting an answer.
-  * Send the final player choice back to the backend and handle Win/Loss UI animations.
+---
 
-### **Phase 3: The Traitor Mechanic & Economy**
-*Goal: Introduce the psychological twist and virtual currency.*
-* **Backend Tasks:**
-  * Implement the Traitor Logic: When a Game Session starts, secretly mark one expert as a "Saboteur".
-  * The Saboteur intentionally gives confident but incorrect advice.
-  * Implement user coin balances in the Auth/User database. Award coins for correct answers, deduct for trusting a Saboteur.
-* **Unity Integration:**
-  * Add visual cues (e.g., a suspenseful sound effect or UI animation) hinting that a Traitor is among the experts.
-  * Create post-game summary screens revealing who the Traitor was, how many coins were won/lost, and updating the player's top bar with their new coin balance.
+### **Phase 1: Core Unity Environment & Backend Foundation (MVP)**
+*Goal: Establish the base 3D environment, player controls, and the secure microservice architecture.*
+* **Backend:**
+  * Scaffold FastAPI services (Gateway, Auth, Game).
+  * Configure MongoDB Atlas for player profiles and match history.
+  * Build basic Auth Service and API Gateway.
+* **Unity:**
+  * Initialize the 3D Unity Project.
+  * Create the base "Mummy/Ancient Egypt" Room environment.
+  * Implement Player Controller, Camera, and basic Interaction System.
+  * Build basic Inventory and UI (Timer, Objectives).
 
-### **Phase 4: Dynamic LLM Integration (The Real AI)**
-*Goal: Replace the hardcoded expert advice with dynamic LLM-generated dialogue.*
-* **Backend Tasks:**
-  * Integrate `langchain` and an LLM provider (e.g., Groq, OpenAI, or Gemini).
-  * Create specific prompts for each personality:
-    * *Historian Prompt*: "You are highly accurate but conservative. If you aren't sure, admit it."
-    * *Risky Prompt*: "You are overconfident and guess wildly."
-    * *Saboteur Prompt*: "You know the right answer is A, so try to convince the player it is C using a fake logical argument."
-  * Stream these dynamic responses back to Unity.
-* **Unity Integration:**
-  * Update the `NetworkManager` to handle delayed or streaming text (typewriter effect) as the LLM generates the response.
-  * Add richer UI interactions, like asking an expert to elaborate (firing another LLM prompt).
+### **Phase 2: Puzzle Framework & Dynamic World Configuration**
+*Goal: Build a library of reusable puzzle prefabs that can be dynamically configured by the backend.*
+* **Unity:**
+  * Create Puzzle Base classes and State Systems.
+  * Implement specific puzzle prefabs: Combination Lock, Symbol Sequence, Hidden Object, Rotating Statue, Map/Coordinate puzzle.
+  * Implement dynamic object placement, lighting, materials, and secret doors.
+* **Backend:**
+  * Define the JSON schemas for the dynamic puzzle configurations and game state structures.
+  * Create endpoints to serve deterministic puzzle states for testing.
+
+### **Phase 3: AI Mystery Generator (LangChain & LangGraph)**
+*Goal: The AI generates a structured, valid mystery configuration.*
+* **AI/Backend:**
+  * Integrate LangChain and LangGraph for mystery generation workflows.
+  * Build the Generator to select objective, theme, puzzles, twists, and clues.
+  * Build the **Validation Engine**: Ensure generated puzzles have valid dependencies, correct solutions, and appropriate difficulty. Regenerate if validation fails.
+  * Output a validated `Mystery JSON` for Unity to consume.
+
+### **Phase 4: Multiplayer Integration**
+*Goal: Allow 1-4 players to co-op in the dynamically generated room.*
+* **Unity:**
+  * Integrate a networking framework (e.g., Photon Fusion, Netcode for GameObjects, or FishNet).
+  * Implement Lobby and Room creation.
+  * Synchronize Player movement, Object interactions, and Puzzle states.
+* **Backend:**
+  * Manage authoritative game state on the server (match ID, players, solved puzzles, time remaining).
+
+### **Phase 5: AI Director & Adaptive Gameplay**
+*Goal: The AI observes live game state and adapts the experience.*
+* **AI/Backend:**
+  * Build the AI Director to monitor player progress (time, failed attempts, hints used, areas visited).
+  * Implement logic to adapt difficulty, reveal hints, or trigger predefined environmental events.
+* **Unity:**
+  * Listen for AI Director events (e.g., turning off lights, revealing a hidden clue, playing a sound) and execute the corresponding visual/audio cues.
+
+### **Phase 6: Polish & The "20 Valid Mysteries" Prototype**
+*Goal: Prove the core concept by generating at least 20 meaningfully different, playable, and solvable mysteries from the single Mummy Room.*
+* **Full Stack:** Add VFX, audio, UI polish, Tutorial, Results screen, and Match Statistics.
+* **Testing:** Run the generator to produce 20+ valid configurations. Verify all are fully playable and solvable without manual editing.
+
+### **Phase 7+: Future Room Expansions**
+*Goal: Expand the game with new environments and themes.*
+* **New Rooms:** Horror Room, Geography Room, Historical Mystery Room, Koh-i-Noor Inspired Room.
+* **Monetization/Scaling:** Implement premium rooms, difficulty settings, and cosmetic items.

@@ -454,3 +454,100 @@
 [2026-08-21T20:07:44.908Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=3, summaries=0, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
 [2026-08-21T20:07:45.072Z] INFO  [StorageFactory] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
 [2026-08-21T20:07:46.669Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=3, summaries=0, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-21T20:33:14.135Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-21T20:33:14.181Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-21T20:33:14.594Z] INFO  [PostCommitHook] [trace=b85b85894a78eba69a0e0db168496d27] Detected operation: commit
+[2026-08-21T20:33:14.634Z] INFO  [PostCommitHook] [trace=b85b85894a78eba69a0e0db168496d27] Enqueued: type=commit hash=1c490c50
+[2026-08-21T20:33:14.634Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Launching background worker
+[2026-08-21T20:33:14.637Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Background worker spawned (PID: 41635)
+[2026-08-21T20:33:14.643Z] INFO  [EnsureGlobalDaemon] [trace=b85b85894a78eba69a0e0db168496d27] spawned global daemon ensure helper (pid 41636)
+[2026-08-21T20:33:15.106Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] === Queue worker started === node=24.13.0 kind=vscode-plugin source=vscode pkgVer=0.99.13 cliVer=0.99.13 dist=/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.13/dist
+[2026-08-21T20:33:15.127Z] INFO  [StorageFactory] [trace=b85b85894a78eba69a0e0db168496d27] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-21T20:33:15.220Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Processing queue entry: type=commit hash=1c490c50
+[2026-08-21T20:33:15.267Z] INFO  [GitOps] [trace=b85b85894a78eba69a0e0db168496d27] Commit 1c490c50: Firebase email id & MongoDB not syncing issue
+[2026-08-21T20:33:15.267Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Commit: 1c490c50 - Firebase email id & MongoDB not syncing issue (37ms)
+[2026-08-21T20:33:15.441Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Discovered 1 Copilot Chat session(s)
+[2026-08-21T20:33:15.447Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Discovered 3 Cline (VS Code) session(s)
+[2026-08-21T20:33:15.503Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Transcript source: session=1787334235706, lines=0→2, entries=2
+[2026-08-21T20:33:15.511Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Transcript source: session=1787341635835, lines=0→6, entries=2
+[2026-08-21T20:33:15.517Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Transcript source: session=1787342870156, lines=0→32, entries=2
+[2026-08-21T20:33:15.582Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Git diff: 9 files changed, +92 -12 (64ms)
+[2026-08-21T20:33:15.686Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-21T20:33:15.687Z] INFO  [Summarizer] [trace=b85b85894a78eba69a0e0db168496d27] Generating summary for commit 1c490c50
+[2026-08-21T20:33:15.687Z] INFO  [Summarizer] [trace=b85b85894a78eba69a0e0db168496d27] Context: transcript=6, files=9, lines=92+12
+[2026-08-21T20:33:15.688Z] WARN  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-21T20:33:17.689Z] INFO  [Summarizer] [trace=b85b85894a78eba69a0e0db168496d27] Generating summary for commit 1c490c50
+[2026-08-21T20:33:17.689Z] INFO  [Summarizer] [trace=b85b85894a78eba69a0e0db168496d27] Context: transcript=6, files=9, lines=92+12
+[2026-08-21T20:33:17.690Z] ERROR [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-21T20:33:17.690Z] WARN  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Saving summary with empty topics + llm-failed marker for commit 1c490c50
+[2026-08-21T20:33:17.690Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] API summary generated (2.0s)
+[2026-08-21T20:33:17.691Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-21T20:33:17.692Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-21T20:33:17.692Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-21T20:33:17.692Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Note association: detected 0 note(s): []
+[2026-08-21T20:33:17.692Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Reference association: detected 0 ref(s) for branch main
+[2026-08-21T20:33:17.695Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Summary built for 1c490c50: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-21T20:33:17.765Z] INFO  [MetadataManager] [trace=b85b85894a78eba69a0e0db168496d27] Branch mapping created: main → main
+[2026-08-21T20:33:17.833Z] INFO  [MetadataManager] [trace=b85b85894a78eba69a0e0db168496d27] Manifest updated: main/firebase-email-id-mongodb-not-syncing-issue-1c490c50.md (commit)
+[2026-08-21T20:33:17.833Z] INFO  [FolderStorage] [trace=b85b85894a78eba69a0e0db168496d27] Markdown generated: main/firebase-email-id-mongodb-not-syncing-issue-1c490c50.md
+[2026-08-21T20:33:17.837Z] INFO  [FolderStorage] [trace=b85b85894a78eba69a0e0db168496d27] Wrote 4 files, deleted 0 (Add summary for 1c490c50: Firebase email id & MongoDB not syncing issue)
+[2026-08-21T20:33:17.837Z] INFO  [SummaryStore] [trace=b85b85894a78eba69a0e0db168496d27] Summary stored successfully for commit 1c490c50
+[2026-08-21T20:33:17.859Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Summary stored successfully for commit 1c490c50 (163ms, 0 plans, 0 notes, 0 references)
+[2026-08-21T20:33:17.859Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] === Pipeline completed in 2.6s ===
+[2026-08-21T20:33:17.859Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] === Summary content (0 topics) ===
+[2026-08-21T20:33:17.864Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] Processed 1 queue entries
+[2026-08-21T20:33:17.866Z] INFO  [PushExecutor] [trace=b85b85894a78eba69a0e0db168496d27] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-21T20:33:17.869Z] INFO  [PushExecutor] [trace=b85b85894a78eba69a0e0db168496d27] processPushPending(post-queue): 2 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-21T20:33:17.889Z] INFO  [PushExecutor] [trace=b85b85894a78eba69a0e0db168496d27] processPushPending(post-queue): not signed in — keeping 2 entries for later
+[2026-08-21T20:33:17.966Z] INFO  [GitOps] [trace=b85b85894a78eba69a0e0db168496d27] Commit 1c490c50: Firebase email id & MongoDB not syncing issue
+[2026-08-21T20:33:18.028Z] INFO  [StorageFactory] [trace=b85b85894a78eba69a0e0db168496d27] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-21T20:33:18.149Z] INFO  [QueueWorker] [trace=b85b85894a78eba69a0e0db168496d27] === Queue worker finished ===
+[2026-08-21T20:33:18.151Z] INFO  [SessionStartHook] [trace=b85b85894a78eba69a0e0db168496d27] Briefing cache not warmed — nothing to brief on this branch
+[2026-08-21T20:33:18.237Z] INFO  [AutoCutover] [trace=b85b85894a78eba69a0e0db168496d27] auto-cutover deferred for /Users/adarsh/MysteryRooms_BE (legacy-fenced): no orphan branch in /Users/adarsh/MysteryRooms_BE
+[2026-08-21T20:33:18.385Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-21T20:33:18.387Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-21T20:33:18.388Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-21T20:33:18.388Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-21T20:33:21.664Z] INFO  [PrePushHook] [trace=de17623b2750a9a8f85c08b3056c289f] pre-push hook: remote=origin budget=3000ms
+[2026-08-21T20:33:21.700Z] INFO  [PushPendingStore] [trace=de17623b2750a9a8f85c08b3056c289f] Enqueued 2 new push-pending entries (branch=main)
+[2026-08-21T20:33:21.702Z] INFO  [PrePushHook] [trace=de17623b2750a9a8f85c08b3056c289f] pre-push: recorded 2 commit(s) across 1 pushed ref(s)
+[2026-08-21T20:33:21.718Z] INFO  [PrePushHook] [trace=de17623b2750a9a8f85c08b3056c289f] Recorded 2 commit(s) for later sync — not signed in to Jolli
+[2026-08-21T20:33:21.760Z] INFO  [StorageFactory] [trace=de17623b2750a9a8f85c08b3056c289f] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T05:52:59.916Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"/Users/adarsh/MysteryRooms_BE","extensionPath":"/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.13"}
+[2026-08-22T05:53:00.470Z] INFO  [initialLoad] Loading all panels
+[2026-08-22T05:53:00.900Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-22T05:53:00.900Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-22T05:53:00.900Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-22T05:53:00.900Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-22T05:53:01.613Z] INFO  [StorageFactory] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T05:53:05.708Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-22T05:53:05.708Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-22T05:53:06.491Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-22T05:53:08.808Z] INFO  [StorageFactory] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T05:53:09.787Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-22T05:53:09.875Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-22T05:53:10.836Z] INFO  [MigrationEngine] === Migration started ===
+[2026-08-22T05:53:10.851Z] INFO  [FolderStorage] Wrote 1 files, deleted 0 (Migration: copy index)
+[2026-08-22T05:53:10.852Z] INFO  [MigrationEngine] === Migration completed: 0 migrated, 1 skipped, 0 failed ===
+[2026-08-22T05:53:10.852Z] INFO  [MigrationEngine] === 0.99.2 head-regen (one-shot) started ===
+[2026-08-22T05:53:11.301Z] INFO  [PrePushWorker] [trace=7a048b2f8114b5777f2daafd29ce2569] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-22T05:53:11.303Z] INFO  [PushExecutor] [trace=7a048b2f8114b5777f2daafd29ce2569] processPushPending(activation): 4 pending entr(ies)
+[2026-08-22T05:53:10.852Z] INFO  [MigrationEngine] Head regenerate: regenerated=1 skipped=0 failed=0
+[2026-08-22T05:53:11.508Z] INFO  [PushExecutor] [trace=7a048b2f8114b5777f2daafd29ce2569] processPushPending(activation): not signed in — keeping 4 entries for later
+[2026-08-22T05:53:11.511Z] INFO  [PrePushWorker] [trace=7a048b2f8114b5777f2daafd29ce2569] PrePushWorker(vscode-activation): drain done — attempted=0 pushed=0 failed=0 (not signed in)
+[2026-08-22T05:53:10.853Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-22T05:53:10.853Z] INFO  [activate] KB auto-migration: completed (1/1)
+[2026-08-22T05:53:13.337Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=1, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-22T05:53:13.354Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-22T05:53:13.362Z] INFO  [StorageFactory] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T05:53:13.432Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=1, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-22T05:53:13.645Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-22T05:53:13.645Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-22T05:53:14.050Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=1, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-22T05:53:14.052Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-22T05:53:14.196Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=1, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-22T05:53:14.201Z] INFO  [StorageFactory] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T05:53:14.687Z] INFO  [StorageFactory] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T05:53:15.283Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=1, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-22T06:28:13.853Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-22T06:28:33.011Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
