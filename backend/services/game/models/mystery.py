@@ -2,6 +2,8 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
+from beanie import Document
+from datetime import datetime
 
 class PuzzleConfig(BaseModel):
     """Configuration for a single puzzle in the mystery"""
@@ -71,3 +73,15 @@ class ValidationResult(BaseModel):
     errors: List[str] = Field(default_factory=list, description="List of validation errors")
     warnings: List[str] = Field(default_factory=list, description="List of warnings")
     validated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class MysteryDocument(Document, MysteryConfig):
+    """MongoDB document for storing generated mysteries"""
+    
+    class Settings:
+        name = "mysteries"
+        indexes = [
+            "mystery_id",
+            "room",
+            "difficulty",
+            "created_at",
+        ]

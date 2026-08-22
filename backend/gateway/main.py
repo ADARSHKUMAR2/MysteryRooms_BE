@@ -48,7 +48,7 @@ async def gateway_root():
 @app.get("/health")
 async def health_check():
     """Public endpoint for monitoring"""
-    return {"status": "healthy"}
+    return {"status": "healthy" , "services": ["auth", "game"]}
 
 if __name__ == "__main__":
     port = int(os.getenv("GATEWAY_PORT", 8000))

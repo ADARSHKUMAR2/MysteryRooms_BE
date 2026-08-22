@@ -609,3 +609,60 @@
 [2026-08-22T07:31:32.348Z] INFO  [PrePushHook] [trace=21075f9863301a69ad0523f4149c00b8] Recorded 1 commit(s) for later sync — not signed in to Jolli
 [2026-08-22T07:31:32.362Z] INFO  [StorageFactory] [trace=21075f9863301a69ad0523f4149c00b8] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
 [2026-08-22T07:49:51.138Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-22T08:02:37.350Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-22T08:02:37.371Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-22T08:02:37.483Z] INFO  [PostCommitHook] [trace=1686ff071900af8db6fe55f545a5ff54] Detected operation: commit
+[2026-08-22T08:02:37.494Z] INFO  [PostCommitHook] [trace=1686ff071900af8db6fe55f545a5ff54] Enqueued: type=commit hash=f4255871
+[2026-08-22T08:02:37.494Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Launching background worker
+[2026-08-22T08:02:37.495Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Background worker spawned (PID: 63917)
+[2026-08-22T08:02:37.496Z] INFO  [EnsureGlobalDaemon] [trace=1686ff071900af8db6fe55f545a5ff54] spawned global daemon ensure helper (pid 63918)
+[2026-08-22T08:02:37.676Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] === Queue worker started === node=24.13.0 kind=vscode-plugin source=vscode pkgVer=0.99.13 cliVer=0.99.13 dist=/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.13/dist
+[2026-08-22T08:02:37.689Z] INFO  [StorageFactory] [trace=1686ff071900af8db6fe55f545a5ff54] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T08:02:37.746Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Processing queue entry: type=commit hash=f4255871
+[2026-08-22T08:02:37.762Z] INFO  [GitOps] [trace=1686ff071900af8db6fe55f545a5ff54] Commit f4255871: added basic game service
+[2026-08-22T08:02:37.762Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Commit: f4255871 - added basic game service (13ms)
+[2026-08-22T08:02:37.856Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Discovered 1 Copilot Chat session(s)
+[2026-08-22T08:02:37.860Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Discovered 5 Cline (VS Code) session(s)
+[2026-08-22T08:02:37.896Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Transcript source: session=1787383429275, lines=11→16, entries=1
+[2026-08-22T08:02:37.925Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Git diff: 28 files changed, +962 -16 (29ms)
+[2026-08-22T08:02:37.948Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-22T08:02:37.948Z] INFO  [Summarizer] [trace=1686ff071900af8db6fe55f545a5ff54] Generating summary for commit f4255871
+[2026-08-22T08:02:37.948Z] INFO  [Summarizer] [trace=1686ff071900af8db6fe55f545a5ff54] Context: transcript=1, files=28, lines=962+16
+[2026-08-22T08:02:37.948Z] WARN  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-22T08:02:39.950Z] INFO  [Summarizer] [trace=1686ff071900af8db6fe55f545a5ff54] Generating summary for commit f4255871
+[2026-08-22T08:02:39.950Z] INFO  [Summarizer] [trace=1686ff071900af8db6fe55f545a5ff54] Context: transcript=1, files=28, lines=962+16
+[2026-08-22T08:02:39.950Z] ERROR [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-22T08:02:39.951Z] WARN  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Saving summary with empty topics + llm-failed marker for commit f4255871
+[2026-08-22T08:02:39.951Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] API summary generated (2.0s)
+[2026-08-22T08:02:39.951Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-22T08:02:39.951Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-22T08:02:39.951Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-22T08:02:39.951Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Note association: detected 0 note(s): []
+[2026-08-22T08:02:39.952Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Reference association: detected 0 ref(s) for branch main
+[2026-08-22T08:02:39.953Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Summary built for f4255871: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-22T08:02:40.018Z] INFO  [MetadataManager] [trace=1686ff071900af8db6fe55f545a5ff54] Manifest updated: main/added-basic-game-service-f4255871.md (commit)
+[2026-08-22T08:02:40.018Z] INFO  [FolderStorage] [trace=1686ff071900af8db6fe55f545a5ff54] Markdown generated: main/added-basic-game-service-f4255871.md
+[2026-08-22T08:02:40.019Z] INFO  [FolderStorage] [trace=1686ff071900af8db6fe55f545a5ff54] Wrote 4 files, deleted 0 (Add summary for f4255871: added basic game service)
+[2026-08-22T08:02:40.019Z] INFO  [SummaryStore] [trace=1686ff071900af8db6fe55f545a5ff54] Summary stored successfully for commit f4255871
+[2026-08-22T08:02:40.031Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Summary stored successfully for commit f4255871 (78ms, 0 plans, 0 notes, 0 references)
+[2026-08-22T08:02:40.031Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] === Pipeline completed in 2.3s ===
+[2026-08-22T08:02:40.031Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] === Summary content (0 topics) ===
+[2026-08-22T08:02:40.033Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] Processed 1 queue entries
+[2026-08-22T08:02:40.034Z] INFO  [PushExecutor] [trace=1686ff071900af8db6fe55f545a5ff54] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-22T08:02:40.035Z] INFO  [PushExecutor] [trace=1686ff071900af8db6fe55f545a5ff54] processPushPending(post-queue): 5 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-22T08:02:40.045Z] INFO  [PushExecutor] [trace=1686ff071900af8db6fe55f545a5ff54] processPushPending(post-queue): not signed in — keeping 5 entries for later
+[2026-08-22T08:02:40.068Z] INFO  [GitOps] [trace=1686ff071900af8db6fe55f545a5ff54] Commit f4255871: added basic game service
+[2026-08-22T08:02:40.097Z] INFO  [StorageFactory] [trace=1686ff071900af8db6fe55f545a5ff54] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T08:02:40.130Z] INFO  [QueueWorker] [trace=1686ff071900af8db6fe55f545a5ff54] === Queue worker finished ===
+[2026-08-22T08:02:40.130Z] INFO  [SessionStartHook] [trace=1686ff071900af8db6fe55f545a5ff54] Briefing cache not warmed — nothing to brief on this branch
+[2026-08-22T08:02:40.281Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-22T08:02:40.281Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-22T08:02:40.281Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-22T08:02:40.281Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-22T08:02:41.301Z] INFO  [PrePushHook] [trace=fa10764e27420a3572f3c33a47624a3a] pre-push hook: remote=origin budget=3000ms
+[2026-08-22T08:02:41.311Z] INFO  [PushPendingStore] [trace=fa10764e27420a3572f3c33a47624a3a] Enqueued 1 new push-pending entries (branch=main)
+[2026-08-22T08:02:41.311Z] INFO  [PrePushHook] [trace=fa10764e27420a3572f3c33a47624a3a] pre-push: recorded 1 commit(s) across 1 pushed ref(s)
+[2026-08-22T08:02:41.316Z] INFO  [PrePushHook] [trace=fa10764e27420a3572f3c33a47624a3a] Recorded 1 commit(s) for later sync — not signed in to Jolli
+[2026-08-22T08:02:41.330Z] INFO  [StorageFactory] [trace=fa10764e27420a3572f3c33a47624a3a] StorageFactory.create: route=legacy-fenced, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-22T08:43:44.840Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-22T08:43:46.875Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
