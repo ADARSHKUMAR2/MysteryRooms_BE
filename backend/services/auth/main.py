@@ -6,6 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 import os
 import sys
 from backend.services.auth.config.firebase import init_firebase  
+from backend.shared.exceptions import register_exception_handlers
 from backend.services.auth.routes import auth_routes
 load_dotenv(find_dotenv())
 
@@ -33,6 +34,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan, title="Mystery Rooms Auth Service")
 
+register_exception_handlers(app, "Auth Service")
 # Register routes
 app.include_router(auth_routes.router)
 

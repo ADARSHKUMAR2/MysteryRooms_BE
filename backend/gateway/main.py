@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from backend.gateway.routes import proxy_routes
 from backend.gateway.middlewares.middleware import FirebaseAuthMiddleware
 from backend.services.auth.config.firebase import init_firebase  # ← Gateway needs Firebase too!
+from backend.shared.exceptions import register_exception_handlers
 from dotenv import load_dotenv, find_dotenv
 import os
 import sys
@@ -32,6 +33,7 @@ app = FastAPI(
 # This runs BEFORE routes - validates tokens first
 app.add_middleware(FirebaseAuthMiddleware)
 
+register_exception_handlers(app, "Gateway")
 # Register proxy routes
 app.include_router(proxy_routes.router)
 

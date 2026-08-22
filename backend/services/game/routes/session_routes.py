@@ -4,7 +4,7 @@ from ..models.game_session import (
     StartSessionRequest, UpdateSessionRequest, CompleteSessionRequest, GameSession
 )
 
-router = APIRouter()
+router = APIRouter(prefix="/game", tags=["Session"])
 session_controller = SessionController()
 
 @router.post("/sessions/start", response_model=GameSession)

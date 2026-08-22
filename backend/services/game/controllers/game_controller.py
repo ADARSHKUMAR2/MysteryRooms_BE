@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from ..models.mystery import GenerateMysteryRequest, MysteryConfig, MysteryDocument
 from ..generators.mock_generator import MockMysteryGenerator
 from ..validators.mystery_validator import MysteryValidator
+from rich import print
 
 class GameController:
     """Controller for game-related operations"""
@@ -19,6 +20,9 @@ class GameController:
             difficulty=request.difficulty,
             player_count=request.player_count or 1
         )
+
+        print(f"\n[BACKEND] 🎲 Received Request: Room='{request.room}', Diff={request.difficulty}, Players={request.player_count}")
+        
         
         # Validate mystery
         validation_result = self.validator.validate(mystery)
@@ -45,6 +49,8 @@ class GameController:
             print(f"⚠️  Failed to save mystery to database: {e}")
             # Don't fail the request if DB save fails
             # Could add retry logic here
+        
+        print(f"[BACKEND] 📤 Sending Payload to Unity:\n{mystery.model_dump_json(indent=2)}\n")
         
         return mystery
 

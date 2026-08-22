@@ -4,6 +4,7 @@ from backend.services.game.routes import game_routes, session_routes
 from backend.services.game.config.db import init_game_db
 from fastapi.middleware.cors import CORSMiddleware 
 import uvicorn
+from backend.shared.exceptions import register_exception_handlers
 from dotenv import load_dotenv, find_dotenv
 import os
 
@@ -42,6 +43,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+register_exception_handlers(app, "Game Service")
 # Register routes
 app.include_router(game_routes.router)
 app.include_router(session_routes.router)

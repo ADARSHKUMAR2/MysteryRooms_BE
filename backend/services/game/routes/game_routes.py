@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Query
 from ..controllers.game_controller import GameController
 from ..models.mystery import GenerateMysteryRequest, MysteryConfig
 
-router = APIRouter(prefix="/game", tags=["Game"])
+router = APIRouter(prefix="/game", tags=["Mystery"])
 
 game_controller = GameController()
 
