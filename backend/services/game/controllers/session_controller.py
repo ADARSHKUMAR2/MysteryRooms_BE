@@ -165,7 +165,9 @@ class SessionController:
         try:
             # Query the users collection for the player's profile
             user_profile = await User.find_one(
-                User.firebase_uid == user_id
+                {
+                    "firebase_uid": user_id
+                }
             )
             
             if user_profile and user_profile.display_name:
@@ -186,7 +188,9 @@ class SessionController:
         for player in session.players:
             # Update Detailed Analytics (player_stats collection)
             stats = await PlayerStatsDocument.find_one(
-                PlayerStatsDocument.user_id == player.user_id
+                {
+                    "user_id": player.user_id
+                }
             )
             
             if not stats:
@@ -234,7 +238,7 @@ class SessionController:
             # ---------------------------------------------------------
             # 2. Update Core User Profile (users collection)
             # ---------------------------------------------------------
-            user = await User.find_one(User.firebase_uid == player.user_id)
+            user = await User.find_one({"firebase_uid": player.user_id})
             
             if user:
                 user.games_played += 1

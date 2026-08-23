@@ -3,6 +3,7 @@ from backend.shared.database import get_database
 from ..models.mystery import MysteryDocument
 from ..models.game_session import GameSessionDocument
 from ..models.player_analytics import PlayerStatsDocument
+from backend.services.auth.models.user import User
 
 async def init_game_db():
     """
@@ -13,5 +14,6 @@ async def init_game_db():
         MysteryDocument,
         GameSessionDocument,
         PlayerStatsDocument,
+        User
     ]
     await get_database(models)

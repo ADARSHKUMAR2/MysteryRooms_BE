@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from ..models.mystery import GenerateMysteryRequest, MysteryConfig, MysteryDocument
-from ..generators.mock_generator import MockMysteryGenerator
+# from ..generators.mock_generator import MockMysteryGenerator
+from ..generators.ai_generator import AIGenerator
 from ..validators.mystery_validator import MysteryValidator
 from rich import print
 
@@ -8,7 +9,8 @@ class GameController:
     """Controller for game-related operations"""
     
     def __init__(self):
-        self.generator = MockMysteryGenerator()
+        # self.generator = MockMysteryGenerator()
+        self.generator = AIGenerator()
         self.validator = MysteryValidator()
     
     async def generate_mystery(self, request: GenerateMysteryRequest) -> MysteryConfig:
