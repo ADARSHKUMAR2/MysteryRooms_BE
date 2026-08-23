@@ -87,3 +87,20 @@ class GameController:
         mysteries = await MysteryDocument.find(query).limit(limit).to_list()
         
         return [MysteryConfig(**m.model_dump()) for m in mysteries]
+
+    async def get_mystery_by_share_code(self, share_code: str) -> MysteryConfig:
+        """Retrieve a mystery using its 6-character share code"""
+        # Ensure it's uppercase for consistent searching
+        code = share_code.upper()
+        
+        mystery_doc = await MysteryDocument.find_one(
+            MysteryDocument.share_code == code
+        )
+        
+        if not mystery_doc:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No mystery found with share code {code}"
+            )
+        
+        return MysteryConfig(**mystery_doc.model_dump())

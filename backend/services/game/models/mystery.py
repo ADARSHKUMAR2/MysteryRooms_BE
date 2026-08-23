@@ -4,6 +4,13 @@ from datetime import datetime
 import uuid
 from beanie import Document
 from datetime import datetime
+import string
+import random
+
+def generate_share_code() -> str:
+    """Generate a 6-character alphanumeric code (e.g., 'X7B9QA')"""
+    chars = string.ascii_uppercase + string.digits
+    return ''.join(random.choices(chars, k=6))
 
 class PuzzleConfig(BaseModel):
     """Configuration for a single puzzle in the mystery"""
@@ -27,6 +34,7 @@ class ClueConfig(BaseModel):
 class MysteryConfig(BaseModel):
     """Complete mystery configuration that Unity will consume"""
     mystery_id: str = Field(default_factory=lambda: str(uuid.uuid4()), description="Unique mystery identifier")
+    share_code: str = Field(default_factory=generate_share_code, description="6-character code to share this mystery")
     room: str = Field(..., description="Room type (mummy_tomb, etc.)")
     difficulty: int = Field(..., ge=1, le=5, description="Difficulty level 1-5")
     theme: str = Field(..., description="Mystery theme (stolen_artifact, curse, etc.)")

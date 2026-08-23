@@ -49,6 +49,12 @@ async def list_mysteries(
     """
     return await game_controller.list_mysteries(room, difficulty, limit)
 
+@router.get("/mysteries/shared/{share_code}", response_model=MysteryConfig)
+async def get_mystery_by_code(share_code: str):
+    """Get an existing mystery by its share code"""
+    return await game_controller.get_mystery_by_share_code(share_code)
+
+
 @router.get("/health")
 async def health_check():
     """Health check endpoint"""
