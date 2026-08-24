@@ -36,7 +36,7 @@ The game is an AI-powered multiplayer 3D mystery/escape-room where the AI acts a
   * Output a validated `Mystery JSON` for Unity to consume.
 
 ### **Phase 4: Multiplayer Integration**
-*Goal: Allow 1-4 players to co-op in the dynamically generated room.*
+*Goal: Allow 1-8 players to co-op in the dynamically generated room.*
 * **Unity:**
   * Integrate a networking framework (e.g., Photon Fusion, Netcode for GameObjects, or FishNet).
   * Implement Lobby and Room creation.

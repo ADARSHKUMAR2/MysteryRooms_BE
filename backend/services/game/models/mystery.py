@@ -73,7 +73,7 @@ class GenerateMysteryRequest(BaseModel):
     """Request model for mystery generation"""
     room: str = Field(default="mummy_tomb", description="Room type")
     difficulty: int = Field(default=3, ge=1, le=5, description="Difficulty level 1-5")
-    player_count: Optional[int] = Field(default=1, ge=1, le=4, description="Number of players")
+    player_count: Optional[int] = Field(default=1, ge=1, le=8, description="Number of players")
 
 class ValidationResult(BaseModel):
     """Result of mystery validation"""

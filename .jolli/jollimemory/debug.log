@@ -963,3 +963,149 @@
 [2026-08-23T11:09:42.620Z] INFO  [PrePushHook] [trace=083c3d30b345616553c6f51b818a7610] Recorded 1 commit(s) for later sync — not signed in to Jolli
 [2026-08-23T11:09:42.666Z] INFO  [StorageFactory] [trace=083c3d30b345616553c6f51b818a7610] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
 [2026-08-23T12:10:17.124Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T12:20:29.947Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-23T12:20:29.958Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=46849, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-23T12:20:29.977Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-23T12:20:30.257Z] INFO  [RepoProfile] [trace=b28d628202964b3ad8cd6e9355993bb3] manual-disable read → false (by=manuallyDisabled, pid=46856, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-23T12:20:30.278Z] INFO  [PostCommitHook] [trace=b28d628202964b3ad8cd6e9355993bb3] Detected operation: commit
+[2026-08-23T12:20:30.302Z] INFO  [PostCommitHook] [trace=b28d628202964b3ad8cd6e9355993bb3] Enqueued: type=commit hash=53d52c60
+[2026-08-23T12:20:30.302Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Launching background worker
+[2026-08-23T12:20:30.303Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Background worker spawned (PID: 46861)
+[2026-08-23T12:20:30.305Z] INFO  [EnsureGlobalDaemon] [trace=b28d628202964b3ad8cd6e9355993bb3] spawned global daemon ensure helper (pid 46862)
+[2026-08-23T12:20:30.629Z] INFO  [RepoProfile] [trace=b28d628202964b3ad8cd6e9355993bb3] manual-disable read → false (by=manuallyDisabled, pid=46861, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-23T12:20:30.732Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] === Queue worker started === node=24.13.0 kind=vscode-plugin source=vscode pkgVer=0.99.14 cliVer=0.99.14 dist=/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.14/dist
+[2026-08-23T12:20:30.751Z] INFO  [StorageFactory] [trace=b28d628202964b3ad8cd6e9355993bb3] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-23T12:20:30.883Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Processing queue entry: type=commit hash=53d52c60
+[2026-08-23T12:20:31.023Z] INFO  [GitOps] [trace=b28d628202964b3ad8cd6e9355993bb3] Commit 53d52c60: share room code added
+[2026-08-23T12:20:31.024Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Commit: 53d52c60 - share room code added (46ms)
+[2026-08-23T12:20:31.288Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Discovered 1 Copilot Chat session(s)
+[2026-08-23T12:20:31.303Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Discovered 7 Cline (VS Code) session(s)
+[2026-08-23T12:20:31.350Z] WARN  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Transcript source read to zero conversation entries: source=copilot-chat path=/Users/adarsh/Library/Application Support/Code/User/workspaceStorage/d0df50c964ca454621bb8f84746943eb/chatSessions/9eb32969-563e-4dbe-8b68-c83ffd765e65.jsonl lines=0→0 unrecognizedRows=0
+[2026-08-23T12:20:31.350Z] WARN  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Not advancing read cursor: source recognized nothing in consumed lines: source=copilot-chat path=/Users/adarsh/Library/Application Support/Code/User/workspaceStorage/d0df50c964ca454621bb8f84746943eb/chatSessions/9eb32969-563e-4dbe-8b68-c83ffd765e65.jsonl lines=0→0 unrecognizedRows=0
+[2026-08-23T12:20:31.478Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Transcript source: session=1787427612310, lines=58→77, entries=1
+[2026-08-23T12:20:31.553Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Git diff: 14 files changed, +135 -16 (73ms)
+[2026-08-23T12:20:31.669Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-23T12:20:31.670Z] INFO  [Summarizer] [trace=b28d628202964b3ad8cd6e9355993bb3] Generating summary for commit 53d52c60
+[2026-08-23T12:20:31.670Z] INFO  [Summarizer] [trace=b28d628202964b3ad8cd6e9355993bb3] Context: transcript=1, files=14, lines=135+16
+[2026-08-23T12:20:31.670Z] WARN  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-23T12:20:33.673Z] INFO  [Summarizer] [trace=b28d628202964b3ad8cd6e9355993bb3] Generating summary for commit 53d52c60
+[2026-08-23T12:20:33.674Z] INFO  [Summarizer] [trace=b28d628202964b3ad8cd6e9355993bb3] Context: transcript=1, files=14, lines=135+16
+[2026-08-23T12:20:33.688Z] ERROR [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-23T12:20:33.695Z] WARN  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Saving summary with empty topics + llm-failed marker for commit 53d52c60
+[2026-08-23T12:20:33.696Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] API summary generated (2.0s)
+[2026-08-23T12:20:33.698Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-23T12:20:33.698Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-23T12:20:33.699Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-23T12:20:33.699Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Note association: detected 0 note(s): []
+[2026-08-23T12:20:33.707Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Reference association: detected 0 ref(s) for branch main
+[2026-08-23T12:20:33.745Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Summary built for 53d52c60: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-23T12:20:34.355Z] INFO  [MetadataManager] [trace=b28d628202964b3ad8cd6e9355993bb3] Manifest updated: main/share-room-code-added-53d52c60.md (commit)
+[2026-08-23T12:20:34.355Z] INFO  [FolderStorage] [trace=b28d628202964b3ad8cd6e9355993bb3] Markdown generated: main/share-room-code-added-53d52c60.md
+[2026-08-23T12:20:34.360Z] INFO  [FolderStorage] [trace=b28d628202964b3ad8cd6e9355993bb3] Wrote 4 files, deleted 0 (Add summary for 53d52c60: share room code added)
+[2026-08-23T12:20:34.361Z] INFO  [SummaryStore] [trace=b28d628202964b3ad8cd6e9355993bb3] Summary stored successfully for commit 53d52c60
+[2026-08-23T12:20:34.420Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Summary stored successfully for commit 53d52c60 (676ms, 0 plans, 0 notes, 0 references)
+[2026-08-23T12:20:34.421Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] === Pipeline completed in 3.4s ===
+[2026-08-23T12:20:34.421Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] === Summary content (0 topics) ===
+[2026-08-23T12:20:34.430Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] Processed 1 queue entries
+[2026-08-23T12:20:34.434Z] INFO  [PushExecutor] [trace=b28d628202964b3ad8cd6e9355993bb3] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-23T12:20:34.439Z] INFO  [PushExecutor] [trace=b28d628202964b3ad8cd6e9355993bb3] processPushPending(post-queue): 10 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-23T12:20:34.466Z] INFO  [PushExecutor] [trace=b28d628202964b3ad8cd6e9355993bb3] processPushPending(post-queue): not signed in — keeping 10 entries for later
+[2026-08-23T12:20:34.639Z] INFO  [GitOps] [trace=b28d628202964b3ad8cd6e9355993bb3] Commit 53d52c60: share room code added
+[2026-08-23T12:20:34.784Z] INFO  [StorageFactory] [trace=b28d628202964b3ad8cd6e9355993bb3] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-23T12:20:34.905Z] INFO  [QueueWorker] [trace=b28d628202964b3ad8cd6e9355993bb3] === Queue worker finished ===
+[2026-08-23T12:20:34.907Z] INFO  [SessionStartHook] [trace=b28d628202964b3ad8cd6e9355993bb3] Briefing cache not warmed — nothing to brief on this branch
+[2026-08-23T12:20:34.966Z] INFO  [SessionSync] [trace=b28d628202964b3ad8cd6e9355993bb3] session sync: not uploading — no API key configured
+[2026-08-23T12:20:35.064Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-23T12:20:35.064Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-23T12:20:35.064Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-23T12:20:35.064Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-23T12:20:48.065Z] INFO  [PrePushHook] [trace=0713af87a26e7e5b2c6d17d1d2571263] pre-push hook: remote=origin budget=3000ms
+[2026-08-23T12:20:48.081Z] INFO  [RepoProfile] [trace=0713af87a26e7e5b2c6d17d1d2571263] manual-disable read → false (by=manuallyDisabled, pid=47588, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-23T12:20:48.114Z] INFO  [PushPendingStore] [trace=0713af87a26e7e5b2c6d17d1d2571263] Enqueued 1 new push-pending entries (branch=main)
+[2026-08-23T12:20:48.115Z] INFO  [PrePushHook] [trace=0713af87a26e7e5b2c6d17d1d2571263] pre-push: recorded 1 commit(s) across 1 pushed ref(s)
+[2026-08-23T12:20:48.132Z] INFO  [PrePushHook] [trace=0713af87a26e7e5b2c6d17d1d2571263] Recorded 1 commit(s) for later sync — not signed in to Jolli
+[2026-08-23T12:20:48.173Z] INFO  [StorageFactory] [trace=0713af87a26e7e5b2c6d17d1d2571263] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-23T13:09:47.971Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T14:09:49.256Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T15:18:05.033Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T16:18:26.845Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T17:18:27.172Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T17:50:31.240Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-23T18:18:27.550Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T19:18:28.841Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T20:18:29.006Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-23T20:22:18.200Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-23T21:18:05.165Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T06:00:44.179Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"/Users/adarsh/MysteryRooms_BE","extensionPath":"/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.14"}
+[2026-08-24T06:00:44.344Z] INFO  [initialLoad] Loading all panels
+[2026-08-24T06:00:44.646Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=63158, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-24T06:00:44.752Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-24T06:00:44.752Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-24T06:00:44.752Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-24T06:00:44.752Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-24T06:00:45.473Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T06:00:50.638Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T06:00:50.638Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T06:00:50.652Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T06:00:52.964Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T06:00:55.178Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-24T06:00:57.086Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-22T05:53:10.853Z — skipping phase 1
+[2026-08-24T06:00:57.087Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-24T06:00:57.091Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-22T05:53:10.853Z
+[2026-08-24T06:00:57.971Z] INFO  [RepoProfile] [trace=b22503a79a6aa383bc9158e4062cb83b] manual-disable read → false (by=manuallyDisabled, pid=64193, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-24T06:00:57.976Z] INFO  [PrePushWorker] [trace=b22503a79a6aa383bc9158e4062cb83b] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-24T06:00:57.978Z] INFO  [PushExecutor] [trace=b22503a79a6aa383bc9158e4062cb83b] processPushPending(activation): 11 pending entr(ies)
+[2026-08-24T06:00:57.998Z] INFO  [PushExecutor] [trace=b22503a79a6aa383bc9158e4062cb83b] processPushPending(activation): not signed in — keeping 11 entries for later
+[2026-08-24T06:00:57.998Z] INFO  [PrePushWorker] [trace=b22503a79a6aa383bc9158e4062cb83b] PrePushWorker(vscode-activation): drain done — attempted=0 pushed=0 failed=0 (not signed in)
+[2026-08-24T06:01:15.728Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T06:01:15.734Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T06:01:15.829Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-24T06:01:15.836Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T06:01:15.837Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T06:01:23.629Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T06:01:23.646Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T06:01:23.713Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T06:01:23.801Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T06:01:24.360Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T06:01:25.000Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T06:24:12.441Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T06:24:12.479Z] WARN  [watcher] memoryDbWatcher refresh failed: disk I/O error
+[2026-08-24T07:24:13.513Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T08:24:13.847Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T09:24:14.884Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T10:24:17.041Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T11:24:33.996Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T12:24:16.306Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T13:24:17.726Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T14:18:50.522Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"/Users/adarsh/MysteryRooms_BE","extensionPath":"/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.14"}
+[2026-08-24T14:18:51.146Z] INFO  [initialLoad] Loading all panels
+[2026-08-24T14:18:51.455Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=1478, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-24T14:18:51.467Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-24T14:18:51.467Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-24T14:18:51.467Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-24T14:18:51.467Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-24T14:19:11.593Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T14:19:17.268Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-24T14:19:19.752Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T14:19:19.756Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T14:19:23.845Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T14:19:25.753Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-24T14:19:37.551Z] INFO  [RepoProfile] [trace=6a315dd6532089a71e229eb78962a72a] manual-disable read → false (by=manuallyDisabled, pid=2954, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-24T14:19:37.592Z] INFO  [PrePushWorker] [trace=6a315dd6532089a71e229eb78962a72a] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-24T14:19:37.597Z] INFO  [PushExecutor] [trace=6a315dd6532089a71e229eb78962a72a] processPushPending(activation): 11 pending entr(ies)
+[2026-08-24T14:19:32.728Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-22T05:53:10.853Z — skipping phase 1
+[2026-08-24T14:19:37.981Z] INFO  [PushExecutor] [trace=6a315dd6532089a71e229eb78962a72a] processPushPending(activation): not signed in — keeping 11 entries for later
+[2026-08-24T14:19:37.981Z] INFO  [PrePushWorker] [trace=6a315dd6532089a71e229eb78962a72a] PrePushWorker(vscode-activation): drain done — attempted=0 pushed=0 failed=0 (not signed in)
+[2026-08-24T14:19:32.732Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-24T14:19:32.737Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-22T05:53:10.853Z
+[2026-08-24T14:22:56.731Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T14:23:01.617Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T14:23:01.626Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T14:23:01.660Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-24T14:23:01.661Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T14:23:03.982Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T14:23:04.070Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T14:23:04.232Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
+[2026-08-24T14:23:04.234Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-24T14:23:06.854Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-24T14:23:08.087Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true

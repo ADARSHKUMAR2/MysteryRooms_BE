@@ -40,7 +40,7 @@ class GameSession(BaseModel):
     
     # Player info
     players: List[PlayerProgress] = Field(default_factory=list, description="Players in this session")
-    max_players: int = Field(default=4, ge=1, le=4)
+    max_players: int = Field(default=4, ge=1, le=8)
     
     # Game progress
     puzzles_solved: List[str] = Field(default_factory=list, description="Globally solved puzzle IDs")
@@ -79,7 +79,7 @@ class StartSessionRequest(BaseModel):
     """Request to start a new game session"""
     mystery_id: str = Field(..., description="Mystery to play")
     player_ids: List[str] = Field(..., description="List of player user IDs")
-    max_players: int = Field(default=4, ge=1, le=4)
+    max_players: int = Field(default=4, ge=1, le=8)
 
 class UpdateSessionRequest(BaseModel):
     """Request to update session progress"""

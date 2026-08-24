@@ -13,7 +13,7 @@ async def generate_mystery(request: GenerateMysteryRequest):
     
     - **room**: Room type (default: mummy_tomb)
     - **difficulty**: Difficulty level 1-5 (default: 3)
-    - **player_count**: Number of players 1-4 (default: 1)
+    - **player_count**: Number of players 1-8 (default: 1)
     
     Returns a complete mystery configuration with puzzles, clues, and validation.
     """

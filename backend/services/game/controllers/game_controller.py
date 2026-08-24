@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from ..models.mystery import GenerateMysteryRequest, MysteryConfig, MysteryDocument
-# from ..generators.mock_generator import MockMysteryGenerator
+from ..generators.mock_generator import MockMysteryGenerator
 from ..generators.ai_generator import AIGenerator
 from ..validators.mystery_validator import MysteryValidator
 from rich import print
