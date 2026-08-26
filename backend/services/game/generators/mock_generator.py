@@ -110,7 +110,7 @@ class MockMysteryGenerator:
                     id="burial_chamber_door",
                     type="symbol_sequence",
                     position="main_chamber",
-                    config={"correctSequence": ["ankh", "falcon", "scarab"]},
+                    config={"correctSequence": ["Ankh", "HorusFalcon", "WingedScarab"]},
                     dependencies=["west_statue", "east_statue"],
                     unlocks=["victory"]
                 )
@@ -180,7 +180,7 @@ class MockMysteryGenerator:
                     id="curse_tablet",
                     type="symbol_sequence",
                     position="burial_chamber",
-                    config={"correctSequence": ["eye", "ankh", "feather", "scales"]},
+                    config={"correctSequence": ["EyeOfHorus", "Ankh", "GoldenFeather", "ScalesOfJustice"]},
                     dependencies=["sarcophagus"],
                     unlocks=["victory"]
                 )
@@ -266,7 +266,7 @@ class MockMysteryGenerator:
                     id="final_chamber",
                     type="symbol_sequence",
                     position="treasure_room",
-                    config={"correctSequence": ["truth", "wisdom", "justice"]},
+                    config={"correctSequence": ["AncientScroll", "HieroglyphTablet", "ScalesOfJustice"]},
                     dependencies=["secret_passage"],
                     unlocks=["victory"]
                 )
@@ -358,7 +358,7 @@ class MockMysteryGenerator:
                     id="scroll_room",
                     type="symbol_sequence",
                     position="east_chamber",
-                    config={"correctSequence": ["life", "death", "rebirth", "eternity"]},
+                    config={"correctSequence": ["Ankh", "AnubisStanding", "SunDisk", "AncientScroll"]},
                     dependencies=["light_beam_puzzle"],
                     unlocks=["master_lock"]
                 ),

@@ -1,2 +1,3 @@
-gateway: FORCE_COLOR=1 uv run uvicorn gateway.main:app --host 0.0.0.0 --port 8000 --reload
-auth: FORCE_COLOR=1 uv run uvicorn services.auth.main:app --host 0.0.0.0 --port 8001 --reload
+gateway: PYTHONPATH=.. FORCE_COLOR=1 uv run uvicorn gateway.main:app --host 0.0.0.0 --port 8000 --reload
+auth: PYTHONPATH=.. FORCE_COLOR=1 uv run uvicorn services.auth.main:app --host 0.0.0.0 --port 8001 --reload
+game: PYTHONPATH=.. FORCE_COLOR=1 uv run uvicorn services.game.main:app --host 0.0.0.0 --port 8002 --reload

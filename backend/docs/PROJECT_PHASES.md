@@ -27,6 +27,24 @@ The game is an AI-powered multiplayer 3D mystery/escape-room where the AI acts a
   * Define the JSON schemas for the dynamic puzzle configurations and game state structures.
   * Create endpoints to serve deterministic puzzle states for testing.
 
+### **Phase 2.1: Egyptian Symbol Sprite Integration**
+*Goal: Integrate 40 Egyptian symbol sprites into both the frontend Unity environment and the backend AI mystery generator to ensure visual consistency and correct puzzle generation.*
+
+* **Backend - Define Symbol Vocabulary:**
+  * Create a Python list/Enum in the backend containing the exact string names of the 40 Egyptian symbols.
+  * Update the AI prompts (`puzzle_prompts.py`) to restrict the LLM to only output sequences using symbols from this specific list.
+  * Update the clue generation prompts (`clue_prompts.py`) so the AI can reference these specific symbol names in its riddles.
+
+* **Frontend - Symbol Database (ScriptableObject):**
+  * Create a Unity `ScriptableObject` named `SymbolDatabase` to act as a central dictionary mapping string names (e.g., "EyeOfHorus") to their corresponding `Sprite` assets.
+  * Populate this database in the Unity Editor with the 40 sliced sprites.
+
+* **Frontend - Puzzle UI and Logic Updates:**
+  * Refactor `SymbolSequencePuzzle.cs` to query the `SymbolDatabase` for sprites instead of using plain text or hardcoded images.
+  * Implement a UI pool (e.g., 5-10 buttons) for players to input their sequence attempt.
+  * Sync the current sequence attempt visually across all clients using `NetworkList` so late-joiners and active players see real-time input.
+  * Provide visual feedback (e.g., flashing red/green) when a sequence is submitted.
+
 ### **Phase 3: AI Mystery Generator (LangChain & LangGraph)**
 *Goal: The AI generates a structured, valid mystery configuration.*
 * **AI/Backend:**

@@ -84,8 +84,8 @@ class GameController:
         if difficulty:
             query["difficulty"] = difficulty
         
-        mysteries = await MysteryDocument.find(query).limit(limit).to_list()
-        
+        mysteries = await MysteryDocument.find(query).sort("-created_at").limit(limit).to_list()
+
         return [MysteryConfig(**m.model_dump()) for m in mysteries]
 
     async def get_mystery_by_share_code(self, share_code: str) -> MysteryConfig:
