@@ -31,3 +31,8 @@ async def get_game_session(session_id: str):
 async def get_player_sessions(user_id: str, limit: int = 20):
     """Get sessions for a specific player"""
     return await session_controller.get_player_sessions(user_id, limit)
+
+@router.post("/sessions/{session_id}/join", response_model=GameSession)
+async def join_game_session(session_id: str, request: dict):
+    """Join an existing game session"""
+    return await session_controller.join_session(session_id, request)

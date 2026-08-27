@@ -158,6 +158,42 @@ class SessionController:
         
         return [GameSession(**s.model_dump()) for s in sessions]
 
+    async def join_session(self, session_id: str, request: dict) -> GameSession:
+        """Join an existing game session"""
+        player_id = request.get("player_id")
+        if not player_id:
+            raise HTTPException(status_code=400, detail="player_id is required")
+
+        session = await GameSessionDocument.find_one(
+            GameSessionDocument.session_id == session_id
+        )
+        if not session:
+            raise HTTPException(status_code=404, detail="Session not found")
+
+        # Check if already joined
+        for player in session.players:
+            if player.user_id == player_id:
+                return GameSession(**session.model_dump())  # Already joined
+
+        if len(session.players) >= session.max_players:
+            raise HTTPException(status_code=400, detail="Session is full")
+
+        # Fetch their username from the auth service profile
+        username = await self._get_username(player_id)
+        
+        session.players.append(
+            PlayerProgress(
+                user_id=player_id,
+                username=username
+            )
+        )
+        session.updated_at = datetime.utcnow()
+        await session.save()
+
+        print(f"✅ Player {player_id} joined session {session_id}")
+        return GameSession(**session.model_dump())
+
+
     async def _get_username(self, user_id: str) -> str:
         """
         Fetch username from auth service or fallback to user_id prefix
@@ -250,7 +286,7 @@ class SessionController:
                 # Calculate simple score
                 base_score = 1000
                 time_penalty = session.completion_time_seconds or 0
-                hint_penalty = session.total_hints_used * 50
+                hint_penalty = player.hints_used * 50
                 earned_score = max(10, base_score - time_penalty - hint_penalty)
                 
                 if session.status == GameStatus.COMPLETED:

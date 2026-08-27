@@ -79,3 +79,20 @@ The game is an AI-powered multiplayer 3D mystery/escape-room where the AI acts a
 *Goal: Expand the game with new environments and themes.*
 * **New Rooms:** Horror Room, Geography Room, Historical Mystery Room, Koh-i-Noor Inspired Room.
 * **Monetization/Scaling:** Implement premium rooms, difficulty settings, and cosmetic items.
+
+### **Phase 2.2: Enhancing Physical Puzzle Interactions**
+*Goal: Upgrade the rudimentary puzzle scripts into fully physical, networked 3D interactions suitable for a high-quality escape room.*
+
+* **Physical Pressure Plates (`PressurePlatePuzzle.cs`):**
+  * Transition from a single button press to physical triggers (`OnTriggerEnter`).
+  * Implement an array of physical floor plates that players must walk over in the sequence defined by the AI's `correctPattern`.
+  * Sync the state of activated plates via NetworkList to show visual feedback (e.g., lighting up).
+
+* **Hidden Compartment Mechanism (`HiddenCompartmentPuzzle.cs`):**
+  * Integrate inventory checking for puzzles where `requiresKey` is true.
+  * Implement physical animations (e.g., sliding doors, moving panels) tied to NetworkVariables to sync the opening sequence across all clients.
+
+* **3D Combination Lock (`CombinationLockPuzzle.cs`):**
+  * Remove standard 2D UI Input Fields.
+  * Implement 3D physical tumblers that players can raycast and scroll to set digits.
+  * Sync tumbler rotations across the network so players can see teammates manipulating the lock.

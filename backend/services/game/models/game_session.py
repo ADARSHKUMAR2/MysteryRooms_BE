@@ -95,3 +95,7 @@ class CompleteSessionRequest(BaseModel):
     session_id: str
     status: GameStatus = Field(..., description="Final status (completed/failed/abandoned)")
     difficulty_rating: Optional[int] = Field(None, ge=1, le=5, description="Player's difficulty rating")
+
+class JoinSessionRequest(BaseModel):
+    """Request for a player to join an active session"""
+    player_id: str = Field(..., description="User ID of the joining player")
