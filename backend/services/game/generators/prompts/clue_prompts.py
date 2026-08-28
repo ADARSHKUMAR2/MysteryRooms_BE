@@ -58,6 +58,24 @@ EXAMPLE CLUES FOR SYMBOL SEQUENCES:
 - Horizontal: "Upon the sacred wall, four guardians stand as one: The Eye that sees all (EyeOfHorus), followed by the silent Sphinx, then the Cobra's deadly warning, and finally Ra's eternal light (SunDisk) - all aligned in a single row, waiting to be touched in order."
 - Vertical: "Seek the vertical path descending from heaven to earth: The Falcon of Horus (HorusFalcon) soars highest, below it rests the sacred Lotus (BlueLotus), upon which the golden Feather (GoldenFeather) descends, and at the base stands the life-giving Palm (PalmTree). One above the other, they reveal the way."
 
+SPECIAL RULES FOR CARD DECK RIDDLE PUZZLES:
+These puzzles use a 4x4 grid of playing cards where players must count specific suits in each column to form a code.
+
+Your clues for these puzzles MUST:
+1. Reference the card suits and their Egyptian/mystical associations:
+   - Spades: Death, the underworld, darkness
+   - Hearts: Life, blood, sacrifice, the heart weighed by Ma'at
+   - Diamonds: Wealth, treasures, golden pyramids, riches of the pharaohs
+   - Clubs: Growth, vegetation, rebirth
+2. Provide riddles that describe WHICH suit to count in WHICH column
+3. Use directional language: "first column", "second path", "third pillar", "final gateway"
+4. Hint that players need to COUNT the matching cards in each column
+5. Suggest the answer is a numerical code formed by the counts
+
+EXAMPLE CLUES FOR CARD DECK RIDDLE:
+- "The Pharaoh's game lies before you, four columns of fate. In the first column, count the symbols of death and darkness. In the second, tally the gems of eternal wealth. In the third, number the marks of life's crimson flow. In the final column, sum the signs of the Nile's bounty. Speak these counts as one, and the lock shall yield."
+- "Ancient cards whisper secrets: Where Anubis walks in the leftmost path, mark his steps. Where golden pyramids shimmer in the second way, count their peaks. Where hearts beat in the third passage, measure their rhythm. Where the river's growth blooms in the final column, number its flourish. Unite these numbers to unlock the door."
+
 CLUE TYPE GUIDELINES:
 - inscription: Text carved on walls, tablets, scrolls
 - visual: Symbols, drawings, patterns players observe

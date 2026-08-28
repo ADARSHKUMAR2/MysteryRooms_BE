@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from pydantic import BaseModel, Field, field_validator
+from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
 import uuid
 from beanie import Document
@@ -29,7 +29,16 @@ class ClueConfig(BaseModel):
     location: str = Field(..., description="Where the clue is located")
     content: str = Field(..., description="The clue content/text")
     related_puzzle: Optional[str] = Field(None, description="Which puzzle this clue helps with")
-    requires_puzzle_solved: Optional[str] = Field(None, description="Only visible after this puzzle is solved")
+    # Accept either str or list of str
+    requires_puzzle_solved: Optional[Union[str, List[str]]] = Field(None, description="Only visible after this puzzle is solved")
+
+    # Automatically convert lists to comma-separated strings!
+    @field_validator('requires_puzzle_solved', mode='before')
+    @classmethod
+    def convert_list_to_str(cls, v):
+        if isinstance(v, list):
+            return ",".join(str(i) for i in v)
+        return v
 
 class MysteryConfig(BaseModel):
     """Complete mystery configuration that Unity will consume"""
@@ -62,6 +71,31 @@ class MysteryConfig(BaseModel):
                         "config": {"correctRotationSteps": 2},
                         "dependencies": [],
                         "unlocks": ["hieroglyph_wall"]
+                    },
+                    {
+                        "id": "pharaoh_cards",
+                        "type": "card_deck_riddle",
+                        "position": "main_chamber",
+                        "config": {
+                            "riddleRules": [
+                                {"column": 0, "suit": "Spades", "count": 2},
+                                {"column": 1, "suit": "Diamonds", "count": 3},
+                                {"column": 2, "suit": "Hearts", "count": 4},
+                                {"column": 3, "suit": "Clubs", "count": 1}
+                            ],
+                            "correctCode": "2341",
+                            "gridCards": [
+                                [
+                                    {"suit": "Spades", "rank": "A"},
+                                    {"suit": "Diamonds", "rank": "7"},
+                                    {"suit": "Hearts", "rank": "K"},
+                                    {"suit": "Clubs", "rank": "5"}
+                                ]
+                                # ... 3 more rows
+                            ]
+                        },
+                        "dependencies": ["entrance_statue"],
+                        "unlocks": ["victory"]
                     }
                 ],
                 "clues": [],

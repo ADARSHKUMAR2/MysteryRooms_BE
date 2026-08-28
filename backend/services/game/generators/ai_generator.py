@@ -144,19 +144,27 @@ class AIGenerator:
     
     def _build_mystery_from_state(self, state: Dict[str, Any]) -> MysteryConfig:
         """Build final MysteryConfig from workflow state"""
-        
+
         from ..models.mystery import PuzzleConfig, ClueConfig
-        
+
         # Convert puzzles
         puzzles = [PuzzleConfig(**p) for p in state["puzzles"]]
-        
+
         # Convert clues
-        clues = [ClueConfig(**c) for c in state.get("clues", [])]
-        
+        clues = []
+        for c in state.get("clues", []):
+            # FIX: If requires_puzzle_solved is a list, convert it to a comma-separated string
+            # so it passes validation in ClueConfig (which expects Optional[str])
+            req_puz = c.get("requires_puzzle_solved")
+            if isinstance(req_puz, list):
+                c["requires_puzzle_solved"] = ",".join(str(p) for p in req_puz)
+            
+            clues.append(ClueConfig(**c))
+
         # Calculate time limit
         time_limits = {1: 900, 2: 1200, 3: 1800, 4: 2100, 5: 2400}
         time_limit = time_limits.get(state["difficulty"], 1800)
-        
+
         # Build mystery
         mystery = MysteryConfig(
             room=state["room"],
@@ -168,5 +176,5 @@ class AIGenerator:
             clues=clues,
             twist=state.get("twist")
         )
-        
+
         return mystery

@@ -14,6 +14,7 @@ class MysteryValidator:
         "map_coordinates",
         "pressure_plate",
         "light_puzzle",
+        "card_deck_riddle",
         "final_lock"
     }
     

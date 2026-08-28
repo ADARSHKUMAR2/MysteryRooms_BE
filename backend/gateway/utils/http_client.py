@@ -14,7 +14,7 @@ class ServiceProxy:
     
     def __init__(self):
         # HTTP client with connection pooling
-        self.client = httpx.AsyncClient(timeout=60.0)
+        self.client = httpx.AsyncClient(timeout=120.0)
     
     async def forward_request(
         self,

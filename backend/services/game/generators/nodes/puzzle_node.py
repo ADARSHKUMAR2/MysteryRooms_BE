@@ -5,6 +5,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from typing import Dict, Any, List
 from ..prompts.puzzle_prompts import PuzzlePromptBuilder
 from ..models.schemas import PuzzleListOutput, PuzzleConfigListOutput
+import random
 
 class PuzzleNode:
     def __init__(self, llm: ChatGroq):
@@ -16,6 +17,15 @@ class PuzzleNode:
     def execute(self, state: Dict[str, Any]) -> Dict[str, Any]:
         # Step 1: Select puzzle types and structure
         puzzles = self._generate_puzzle_structure(state)
+        
+        # Step 1.5: Programmatic Enforcement - Ensure card deck puzzle exists!
+        has_card_puzzle = any(p["type"] == "card_deck_riddle" for p in puzzles)
+        if not has_card_puzzle and len(puzzles) > 0:
+            print("⚠️ LLM forgot card_deck_riddle. Injecting it programmatically.")
+            # Convert a non-starting, non-ending puzzle to card deck, or just add one
+            target_index = len(puzzles) - 2 if len(puzzles) > 2 else 0
+            puzzles[target_index]["type"] = "card_deck_riddle"
+            puzzles[target_index]["id"] = "injected_card_riddle"
         
         # Step 2: Generate specific configurations
         validation_errors = state.get("validation_errors", [])
@@ -35,7 +45,6 @@ class PuzzleNode:
         
         try:
             result: PuzzleListOutput = self.structured_structure_llm.invoke([system_msg, human_msg])
-            # Convert Pydantic objects back to dicts for internal state processing
             return [p.model_dump() for p in result.puzzles]
         except Exception as e:
             print(f"⚠️ Puzzle structure generation error: {e}")
@@ -86,10 +95,14 @@ class PuzzleNode:
         return [
             {
                 "id": "entrance_statue", "type": "rotating_statue", "position": "entrance_hall",
-                "dependencies": [], "unlocks": ["final_door"], "hint": "Face the guardian"
+                "dependencies": [], "unlocks": ["card_riddle"], "hint": "Face the guardian"
+            },
+            {
+                "id": "card_riddle", "type": "card_deck_riddle", "position": "main_chamber",
+                "dependencies": ["entrance_statue"], "unlocks": ["final_door"], "hint": "Count the suits."
             },
             {
                 "id": "final_door", "type": "combination_lock", "position": "treasure_room",
-                "dependencies": ["entrance_statue"], "unlocks": ["victory"], "hint": "The code awaits"
+                "dependencies": ["card_riddle"], "unlocks": ["victory"], "hint": "The code awaits"
             }
         ]

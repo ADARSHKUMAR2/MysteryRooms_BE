@@ -17,7 +17,7 @@ class GameSettings(BaseSettings):
     GROQ_MODEL: str = "openai/gpt-oss-120b"
     GROQ_TEMPERATURE: float = 0.7
     GROQ_MAX_TOKENS: int = 4000
-    GROQ_TIMEOUT: int = 60
+    GROQ_TIMEOUT: int = 120
     
     # AI Generation Settings
     MAX_RETRY_ATTEMPTS: int = 3

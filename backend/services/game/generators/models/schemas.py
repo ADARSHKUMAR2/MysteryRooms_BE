@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Union
 
 class StoryOutput(BaseModel):
     theme: str = Field(description="Thematic element of the mystery (e.g., 'ancient_curse')")
@@ -17,7 +17,10 @@ class PuzzleStructureOutput(BaseModel):
 class PuzzleListOutput(BaseModel):
     puzzles: List[PuzzleStructureOutput]
 
-# UPDATED: More specific schema for puzzle configurations
+# ====================
+# Puzzle Configuration Models
+# ====================
+
 class RotatingStatueConfig(BaseModel):
     correctRotationSteps: int = Field(description="Number of 90-degree rotations (0-3)")
 
@@ -46,6 +49,22 @@ class LightPuzzleConfig(BaseModel):
     correctTorchOrder: Optional[List[int]] = Field(default=None, description="Order of torches")
     requiresAlignment: Optional[bool] = Field(default=None, description="Whether alignment is needed")
 
+# NEW: Card Deck Riddle Models
+class RiddleRule(BaseModel):
+    column: int = Field(description="Column index (0-3)")
+    suit: str = Field(description="Card suit to count (Spades, Hearts, Diamonds, Clubs)")
+    count: int = Field(description="Number of cards of this suit in the column (1-4)")
+
+class CardData(BaseModel):
+    suit: str = Field(description="Card suit (Spades, Hearts, Diamonds, Clubs)")
+    rank: str = Field(description="Card rank (A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K)")
+
+class CardDeckRiddleConfig(BaseModel):
+    riddleRules: List[RiddleRule] = Field(description="Exactly 4 rules, one per column")
+    correctCode: str = Field(description="4-digit solution code formed by concatenating counts")
+    gridCards: List[CardData] = Field(description="List of exactly 16 cards (read left-to-right, top-to-bottom for the 4x4 grid)")
+
+
 # Main config output that wraps the actual configuration
 class PuzzleConfigOutput(BaseModel):
     id: str = Field(description="The puzzle ID this configuration is for")
@@ -60,7 +79,8 @@ class ClueOutput(BaseModel):
     location: str = Field(description="Where the clue is located")
     content: str = Field(description="The clue content/text")
     related_puzzle: str = Field(description="Which puzzle this clue helps with")
-    requires_puzzle_solved: Optional[str] = Field(default=None, description="Only visible after this puzzle is solved")
+    # FIX: Allows the LLM to output a single string or a list of strings
+    requires_puzzle_solved: Optional[Union[str, List[str]]] = Field(default=None, description="Only visible after this puzzle is solved (string or list of strings)")
 
 class ClueListOutput(BaseModel):
     clues: List[ClueOutput]

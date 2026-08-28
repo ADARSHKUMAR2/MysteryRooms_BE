@@ -12,7 +12,7 @@ class PuzzlePromptBuilder:
     VALID_PUZZLE_TYPES = [
         "rotating_statue", "symbol_sequence", "hieroglyph_sequence",
         "combination_lock", "hidden_compartment", "map_coordinates",
-        "pressure_plate", "light_puzzle"
+        "pressure_plate", "light_puzzle", "card_deck_riddle"
     ]
 
     VALID_POSITIONS = [
@@ -37,15 +37,16 @@ REQUIRED PUZZLES: exactly {min_puzzles} puzzles.
 AVAILABLE PUZZLE TYPES:
 {', '.join(PuzzlePromptBuilder.VALID_PUZZLE_TYPES)}
 
+CRITICAL RULES:
+1. You ABSOLUTELY MUST include exactly ONE "card_deck_riddle" puzzle in your response. This is mandatory.
+2. At least ONE puzzle must have empty dependencies [] (the starting puzzle).
+3. At least ONE puzzle must unlock ["victory"] (the ending puzzle).
+4. Each puzzle must have a unique ID (e.g., "entrance_statue", "pharaoh_cards").
+5. Dependencies must reference existing puzzle IDs you have created.
+6. No circular dependencies allowed.
+
 AVAILABLE POSITIONS:
 {', '.join(PuzzlePromptBuilder.VALID_POSITIONS)}
-
-CRITICAL RULES:
-1. At least ONE puzzle must have empty dependencies [] (the starting puzzle).
-2. At least ONE puzzle must unlock ["victory"] (the ending puzzle).
-3. Each puzzle must have a unique ID (e.g., "entrance_statue", "hieroglyph_wall").
-4. Dependencies must reference existing puzzle IDs you have created.
-5. No circular dependencies allowed.
 
 DIFFICULTY {difficulty} DESIGN PATTERNS:
 - Difficulty 1-2: Linear chain (A → B → victory)
@@ -65,33 +66,29 @@ DIFFICULTY {difficulty} DESIGN PATTERNS:
 PUZZLE LIST TO CONFIGURE:
 {puzzles}
 
-IMPORTANT: You must return a list of configuration objects. Each object MUST have:
-- "id": the puzzle ID (matching the puzzle from the list above)
-- "config": an object containing the configuration parameters for that puzzle type
+Generate the configuration for each puzzle in the exact same order. Make sure the "id" field strictly matches the puzzle ID.
 
 CONFIGURATION RULES BY TYPE:
 
-- rotating_statue: 
+- rotating_statue:
   Example: {{"id": "entrance_statue", "config": {{"correctRotationSteps": 2}}}}
-  
-- combination_lock: 
+
+- combination_lock:
   Example: {{"id": "main_lock", "config": {{"correctCombination": "1234"}}}}
 
 - symbol_sequence / hieroglyph_sequence: These are GRID-BASED pattern matching puzzles
-  
+
   GRID LAYOUT: 40 symbols arranged in 8 columns × 5 rows displayed on a wall
-  
+
   REQUIRED FIELDS in config:
   • correctSequence: List of EXACTLY 4 symbols chosen from [{valid_symbols}]. Each symbol MUST be used only ONCE.
   • patternType: Either "horizontal_row" or "vertical_column"
   • patternStartPosition: Object with "row" (integer 0-4) and "col" (integer 0-7)
-  
+
   PATTERN RULES:
   - If "horizontal_row": The 4 symbols appear consecutively in the same row
   - If "vertical_column": The 4 symbols appear consecutively in the same column
-  - Valid horizontal patterns: Must start at columns 0-4 (so 4 consecutive symbols fit within 8 columns)
-  - Valid vertical patterns: Must start at rows 0-1 (so 4 consecutive symbols fit within 5 rows)
-  
+
   Example: {{
     "id": "main_symbol",
     "config": {{
@@ -100,11 +97,53 @@ CONFIGURATION RULES BY TYPE:
       "patternStartPosition": {{"row": 2, "col": 1}}
     }}
   }}
-  
-- hidden_compartment: requires `requiresKey` (boolean)
-- map_coordinates: requires `correctCoordinates` (string, e.g., "N23-E45")
-- pressure_plate: requires `correctPattern` (list of integers, e.g., [1, 2, 3, 4])
-- light_puzzle: requires `correctTorchOrder` (list of integers) OR `requiresAlignment` (boolean)
+
+- card_deck_riddle: This is a CARD-BASED riddle puzzle using a 4×4 grid of playing cards
+
+  GRID LAYOUT: 16 playing cards arranged in 4 columns × 4 rows
+  CARD SUITS: Spades, Hearts, Diamonds, Clubs
+  CARD RANKS: A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
+
+  REQUIRED FIELDS in config:
+  • riddleRules: List of EXACTLY 4 rule objects (one per column), each with:
+    - "column": Column index (0-3)
+    - "suit": The suit to count ("Spades", "Hearts", "Diamonds", or "Clubs")
+    - "count": How many cards of that suit are in the column (1-4)
+  • correctCode: String of 4 digits representing the answer (e.g., "2341")
+  • gridCards: Array of exactly 16 card objects (read left-to-right, top-to-bottom for the 4x4 grid), each with "suit" and "rank"
+
+  EXAMPLE:
+  {{
+    "id": "pharaoh_cards",
+    "config": {{
+      "riddleRules": [
+        {{"column": 0, "suit": "Spades", "count": 2}},
+        {{"column": 1, "suit": "Diamonds", "count": 3}},
+        {{"column": 2, "suit": "Hearts", "count": 4}},
+        {{"column": 3, "suit": "Clubs", "count": 1}}
+      ],
+      "correctCode": "2341",
+      "gridCards": [
+        {{"suit": "Spades", "rank": "A"}}, {{"suit": "Diamonds", "rank": "7"}}, {{"suit": "Hearts", "rank": "K"}}, {{"suit": "Clubs", "rank": "5"}},
+        {{"suit": "Spades", "rank": "Q"}}, {{"suit": "Diamonds", "rank": "3"}}, {{"suit": "Hearts", "rank": "2"}}, {{"suit": "Hearts", "rank": "9"}},
+        {{"suit": "Hearts", "rank": "J"}}, {{"suit": "Diamonds", "rank": "10"}}, {{"suit": "Hearts", "rank": "6"}}, {{"suit": "Diamonds", "rank": "4"}},
+        {{"suit": "Diamonds", "rank": "8"}}, {{"suit": "Hearts", "rank": "A"}}, {{"suit": "Hearts", "rank": "3"}}, {{"suit": "Spades", "rank": "K"}}
+      ]
+    }}
+  }}
+
+
+- hidden_compartment:
+  Example: {{"id": "secret_door", "config": {{"requiresKey": true}}}}
+
+- map_coordinates:
+  Example: {{"id": "treasure_map", "config": {{"correctCoordinates": "N23-E45"}}}}
+
+- pressure_plate:
+  Example: {{"id": "floor_puzzle", "config": {{"correctPattern": [1, 2, 3, 4]}}}}
+
+- light_puzzle:
+  Example: {{"id": "torch_room", "config": {{"correctTorchOrder": [3, 1, 4, 2]}}}}
 
 Generate exactly one configuration object for each puzzle in the list provided, in the exact same order."""
 
