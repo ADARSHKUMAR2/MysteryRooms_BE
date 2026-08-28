@@ -43,6 +43,21 @@ If a clue relates to a symbol_sequence or hieroglyph_sequence puzzle, you MUST c
 [{valid_symbols}]
 (e.g., "The protector of the falcon (HorusFalcon) watches over the golden beacon (SunDisk).")
 
+SPECIAL RULES FOR SYMBOL/HIEROGLYPH SEQUENCE PUZZLES:
+These puzzles use a 40-symbol grid (8 columns × 5 rows) where players must find 4 specific symbols arranged in a pattern.
+
+Your clues for these puzzles MUST:
+1. Mention all 4 symbols from the correctSequence by their EXACT names from the valid symbols list
+2. Include spatial hints about the pattern direction:
+   - For horizontal patterns: Use phrases like "aligned in a row", "following the line", "side by side", "across the wall", "in a straight line horizontally"
+   - For vertical patterns: Use phrases like "stacked vertically", "descending column", "one above the other", "rising upward", "in a vertical line"
+3. Hint at the ORDER of the symbols using sequence language (first to last, beginning to end, etc.)
+4. Maintain the cryptic, atmospheric Egyptian tomb theme
+
+EXAMPLE CLUES FOR SYMBOL SEQUENCES:
+- Horizontal: "Upon the sacred wall, four guardians stand as one: The Eye that sees all (EyeOfHorus), followed by the silent Sphinx, then the Cobra's deadly warning, and finally Ra's eternal light (SunDisk) - all aligned in a single row, waiting to be touched in order."
+- Vertical: "Seek the vertical path descending from heaven to earth: The Falcon of Horus (HorusFalcon) soars highest, below it rests the sacred Lotus (BlueLotus), upon which the golden Feather (GoldenFeather) descends, and at the base stands the life-giving Palm (PalmTree). One above the other, they reveal the way."
+
 CLUE TYPE GUIDELINES:
 - inscription: Text carved on walls, tablets, scrolls
 - visual: Symbols, drawings, patterns players observe

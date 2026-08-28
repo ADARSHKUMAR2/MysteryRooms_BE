@@ -65,10 +65,42 @@ DIFFICULTY {difficulty} DESIGN PATTERNS:
 PUZZLE LIST TO CONFIGURE:
 {puzzles}
 
+IMPORTANT: You must return a list of configuration objects. Each object MUST have:
+- "id": the puzzle ID (matching the puzzle from the list above)
+- "config": an object containing the configuration parameters for that puzzle type
+
 CONFIGURATION RULES BY TYPE:
-- rotating_statue: requires `correctRotationSteps` (integer 0-3)
-- combination_lock: requires `correctCombination` (string of 3-4 digits)
-- symbol_sequence / hieroglyph_sequence: requires `correctSequence`. This MUST be a list of 3 to 5 strings chosen EXACTLY from this list: [{valid_symbols}]
+
+- rotating_statue: 
+  Example: {{"id": "entrance_statue", "config": {{"correctRotationSteps": 2}}}}
+  
+- combination_lock: 
+  Example: {{"id": "main_lock", "config": {{"correctCombination": "1234"}}}}
+
+- symbol_sequence / hieroglyph_sequence: These are GRID-BASED pattern matching puzzles
+  
+  GRID LAYOUT: 40 symbols arranged in 8 columns × 5 rows displayed on a wall
+  
+  REQUIRED FIELDS in config:
+  • correctSequence: List of EXACTLY 4 symbols chosen from [{valid_symbols}]. Each symbol MUST be used only ONCE.
+  • patternType: Either "horizontal_row" or "vertical_column"
+  • patternStartPosition: Object with "row" (integer 0-4) and "col" (integer 0-7)
+  
+  PATTERN RULES:
+  - If "horizontal_row": The 4 symbols appear consecutively in the same row
+  - If "vertical_column": The 4 symbols appear consecutively in the same column
+  - Valid horizontal patterns: Must start at columns 0-4 (so 4 consecutive symbols fit within 8 columns)
+  - Valid vertical patterns: Must start at rows 0-1 (so 4 consecutive symbols fit within 5 rows)
+  
+  Example: {{
+    "id": "main_symbol",
+    "config": {{
+      "correctSequence": ["EyeOfHorus", "Sphinx", "Cobra", "SunDisk"],
+      "patternType": "horizontal_row",
+      "patternStartPosition": {{"row": 2, "col": 1}}
+    }}
+  }}
+  
 - hidden_compartment: requires `requiresKey` (boolean)
 - map_coordinates: requires `correctCoordinates` (string, e.g., "N23-E45")
 - pressure_plate: requires `correctPattern` (list of integers, e.g., [1, 2, 3, 4])

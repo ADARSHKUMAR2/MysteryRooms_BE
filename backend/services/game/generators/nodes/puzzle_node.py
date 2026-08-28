@@ -56,18 +56,28 @@ class PuzzleNode:
         try:
             result: PuzzleConfigListOutput = self.structured_config_llm.invoke([system_msg, human_msg])
             
-            # Merge configs into puzzles safely
-            configs = [c.model_dump()["config"] for c in result.configs]
+            # Create a mapping of puzzle ID to config
+            config_map = {}
+            for config_item in result.configs:
+                config_dict = config_item.model_dump()
+                puzzle_id = config_dict.get("id")
+                config_data = config_dict.get("config", {})
+                if puzzle_id:
+                    config_map[puzzle_id] = config_data
             
-            for i, puzzle in enumerate(puzzles):
-                if i < len(configs):
-                    puzzle["config"] = configs[i]
+            # Merge configs into puzzles by matching IDs
+            for puzzle in puzzles:
+                puzzle_id = puzzle.get("id")
+                if puzzle_id in config_map:
+                    puzzle["config"] = config_map[puzzle_id]
                 else:
+                    print(f"⚠️ No config found for puzzle: {puzzle_id}")
                     puzzle["config"] = {}
                     
             return puzzles
         except Exception as e:
             print(f"⚠️ Puzzle config generation error: {e}")
+            # Provide empty configs as fallback
             for puzzle in puzzles:
                 puzzle["config"] = {}
             return puzzles
