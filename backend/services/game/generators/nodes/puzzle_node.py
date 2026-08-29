@@ -74,6 +74,36 @@ class PuzzleNode:
                 if puzzle_id:
                     config_map[puzzle_id] = config_data
             
+                # --- FIX 1: FLATTEN GRID CARDS ---
+                if "gridCards" in config_data:
+                    cards = config_data["gridCards"]
+                    if len(cards) > 0 and isinstance(cards[0], list):
+                        print(f"Flattening 2D gridCards array from LLM for {puzzle_id}...")
+                        flat_cards = []
+                        for row in cards:
+                            flat_cards.extend(row)
+                        config_data["gridCards"] = flat_cards
+
+                # --- FIX 2: FORCE CORRECT MATH FOR CARD RIDDLE CODE ---
+                if "riddleRules" in config_data:
+                    try:
+                        rules = config_data["riddleRules"]
+                        # Sort rules by column to ensure the code is in the right order (col 0, 1, 2, 3)
+                        rules.sort(key=lambda x: x.get("column", 0))
+                        
+                        # Concatenate the counts to form the true correct code
+                        true_code = "".join(str(rule.get("count", 0)) for rule in rules)
+                        
+                        # Overwrite the LLM's hallucinated code with the mathematically correct one
+                        if config_data.get("correctCode") != true_code:
+                            print(f"⚠️ Correcting LLM hallucinated code for {puzzle_id}: {config_data.get('correctCode')} -> {true_code}")
+                            config_data["correctCode"] = true_code
+                    except Exception as e:
+                        print(f"Error recalculating card riddle code: {e}")
+
+                if puzzle_id:
+                    config_map[puzzle_id] = config_data
+            
             # Merge configs into puzzles by matching IDs
             for puzzle in puzzles:
                 puzzle_id = puzzle.get("id")
@@ -83,6 +113,12 @@ class PuzzleNode:
                     print(f"⚠️ No config found for puzzle: {puzzle_id}")
                     puzzle["config"] = {}
                     
+            return puzzles
+        except Exception as e:
+            print(f"⚠️ Puzzle config generation error: {e}")
+            # Provide empty configs as fallback
+            for puzzle in puzzles:
+                puzzle["config"] = {}
             return puzzles
         except Exception as e:
             print(f"⚠️ Puzzle config generation error: {e}")
