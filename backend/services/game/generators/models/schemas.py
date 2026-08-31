@@ -46,8 +46,8 @@ class MapCoordinatesConfig(BaseModel):
     correctCoordinates: str = Field(description="Coordinate string (e.g., 'N23-E45')")
 
 class LightPuzzleConfig(BaseModel):
-    correctTorchOrder: Optional[List[int]] = Field(default=None, description="Order of torches")
-    requiresAlignment: Optional[bool] = Field(default=None, description="Whether alignment is needed")
+    # correctTorchOrder: Optional[List[int]] = Field(default=None, description="Order of torches")
+    requiresAlignment: bool = Field(default=None, description="Whether alignment is needed")
 
 # NEW: Card Deck Riddle Models
 class RiddleRule(BaseModel):

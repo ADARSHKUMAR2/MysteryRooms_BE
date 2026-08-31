@@ -38,7 +38,7 @@ AVAILABLE PUZZLE TYPES:
 {', '.join(PuzzlePromptBuilder.VALID_PUZZLE_TYPES)}
 
 CRITICAL RULES:
-1. You ABSOLUTELY MUST include exactly ONE "card_deck_riddle" puzzle in your response. This is mandatory.
+1. You ABSOLUTELY MUST include exactly ONE "card_deck_riddle" puzzle and one "light_puzzle" puzzle in your response. These are mandatory.
 2. At least ONE puzzle must have empty dependencies [] (the starting puzzle).
 3. At least ONE puzzle must unlock ["victory"] (the ending puzzle).
 4. Each puzzle must have a unique ID (e.g., "entrance_statue", "pharaoh_cards").
@@ -75,6 +75,15 @@ CONFIGURATION RULES BY TYPE:
 
 - combination_lock:
   Example: {{"id": "main_lock", "config": {{"correctCombination": "1234"}}}}
+
+- light_puzzle: This is a LASER REFLECTION puzzle where a beam of light must bounce off mirrors to hit a target.
+  
+  REQUIRED FIELDS in config:
+  • requiresAlignment: Must be true
+  • mirrorCount: Integer between 2 and 4 (how many mirrors the player must use)
+  
+Example: {{"id": "sun_beam_chamber", "config": {{"requiresAlignment": true, "mirrorCount": 3}}}}
+
 
 - symbol_sequence / hieroglyph_sequence: These are GRID-BASED pattern matching puzzles
 

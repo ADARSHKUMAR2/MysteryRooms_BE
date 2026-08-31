@@ -76,6 +76,37 @@ EXAMPLE CLUES FOR CARD DECK RIDDLE:
 - "The Pharaoh's game lies before you, four columns of fate. In the first column, count the symbols of death and darkness. In the second, tally the gems of eternal wealth. In the third, number the marks of life's crimson flow. In the final column, sum the signs of the Nile's bounty. Speak these counts as one, and the lock shall yield."
 - "Ancient cards whisper secrets: Where Anubis walks in the leftmost path, mark his steps. Where golden pyramids shimmer in the second way, count their peaks. Where hearts beat in the third passage, measure their rhythm. Where the river's growth blooms in the final column, number its flourish. Unite these numbers to unlock the door."
 
+SPECIAL RULES FOR PRESSURE PLATE PUZZLES:
+These puzzles consist of exactly 5 large stone tiles on the floor. 
+Each tile has a specific Egyptian carving representing its ID (1 to 5):
+- Plate 1 = The Pyramid (Greatness, monuments, reaching the sky)
+- Plate 2 = The Mummy (The sleeping dead, bandages, eternal rest)
+- Plate 3 = The Egyptian Cat (Bastet, the feline guardian, the watcher)
+- Plate 4 = The Coffin / Sarcophagus (The golden vessel, the final bed)
+- Plate 5 = Ankh Khonsu (The moon god, time, the traveler of the night sky)
+
+Your clues for pressure_plate puzzles MUST:
+1. Be written as an ancient poem, stanza, or mythological story.
+2. Reference the exact carvings (Pyramid, Mummy, Cat, Coffin, Khonsu) in the exact order specified by the `correctPattern` array.
+   (For example, if the pattern is [3, 1, 5, 2, 4], the poem MUST mention the Cat first, the Pyramid second, Khonsu third, the Mummy fourth, and the Coffin last).
+3. The story must clearly imply a sequence of events so the player knows the exact order to step on the tiles.
+
+EXAMPLE CLUES FOR PRESSURE PLATES:
+- If pattern is [1, 3, 5, 2, 4]: "To cross the abyss, follow the path of the ancients. Begin where the great stone peaks touch the heavens (Pyramid). From there, seek the gaze of the sacred watcher with golden eyes (Cat). Let the moon traveler guide your next step (Khonsu), before honoring those bound in eternal slumber (Mummy). Only then may you rest your foot upon the golden vessel of the afterlife (Coffin)."
+- If pattern is [4, 2, 3, 1, 5]: " Honor the golden vessel that cradles the dead (Coffin), then step where the linen-wrapped kings lie sleeping (Mummy). The feline guardian (Cat) will watch your third step. Ascend to the monument of the sun (Pyramid), and finally, walk in the light of the moon god (Khonsu) to find safe passage."
+
+SPECIAL RULES FOR LIGHT/MIRROR PUZZLES:
+These puzzles involve rotating standing mirrors to bounce a laser-like beam of light across the room to hit a crystal target.
+
+Your clues for these puzzles MUST:
+1. Use language about "guiding the light", "bending the sun", or "reflecting the beam".
+2. Mention that the path is not straight and requires reflection.
+
+EXAMPLE CLUES FOR LIGHT PUZZLES:
+- "The true path is never straight. Let the sun's gaze strike the polished glass, and bend its light until it finds the resting star."
+- "Four sentinels of glass stand in the dark. Turn their faces to catch the dawn, passing the blazing torch from one to the next until the crystal awakens."
+- "The light of the sun is a beacon of hope. It guides the way, bending the path until it reaches the crystal."
+
 CLUE TYPE GUIDELINES:
 - inscription: Text carved on walls, tablets, scrolls
 - visual: Symbols, drawings, patterns players observe
