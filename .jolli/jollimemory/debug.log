@@ -1927,3 +1927,56 @@
 [2026-08-31T12:18:39.285Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
 [2026-08-31T12:19:10.542Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
 [2026-08-31T12:44:11.000Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-08-31T13:32:20.442Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-31T13:32:20.449Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=53308, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-31T13:32:20.480Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-31T13:32:21.021Z] INFO  [RepoProfile] [trace=f86badc6cd847805011a345d507f35d4] manual-disable read → false (by=manuallyDisabled, pid=53315, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-31T13:32:21.058Z] INFO  [PostCommitHook] [trace=f86badc6cd847805011a345d507f35d4] Detected operation: commit
+[2026-08-31T13:32:21.103Z] INFO  [PostCommitHook] [trace=f86badc6cd847805011a345d507f35d4] Enqueued: type=commit hash=252892c9
+[2026-08-31T13:32:21.105Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Launching background worker
+[2026-08-31T13:32:21.108Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Background worker spawned (PID: 53350)
+[2026-08-31T13:32:21.114Z] INFO  [EnsureGlobalDaemon] [trace=f86badc6cd847805011a345d507f35d4] spawned global daemon ensure helper (pid 53351)
+[2026-08-31T13:32:21.535Z] INFO  [RepoProfile] [trace=f86badc6cd847805011a345d507f35d4] manual-disable read → false (by=manuallyDisabled, pid=53350, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-08-31T13:32:21.607Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] === Queue worker started === node=24.13.0 kind=vscode-plugin source=vscode pkgVer=0.99.16 cliVer=0.99.16 dist=/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.16/dist
+[2026-08-31T13:32:22.198Z] INFO  [StorageFactory] [trace=f86badc6cd847805011a345d507f35d4] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-31T13:32:22.492Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Processing queue entry: type=commit hash=252892c9
+[2026-08-31T13:32:22.524Z] INFO  [GitOps] [trace=f86badc6cd847805011a345d507f35d4] Commit 252892c9: clue for combinatiion puzzle updated
+[2026-08-31T13:32:22.524Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Commit: 252892c9 - clue for combinatiion puzzle updated (24ms)
+[2026-08-31T13:32:22.601Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Discovered 1 Cline CLI session(s)
+[2026-08-31T13:32:22.775Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Transcript source: session=1787912218075_vwcbk, lines=341→403, entries=30
+[2026-08-31T13:32:22.853Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Git diff: 14 files changed, +152 -13 (75ms)
+[2026-08-31T13:32:22.962Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-31T13:32:22.964Z] INFO  [Summarizer] [trace=f86badc6cd847805011a345d507f35d4] Generating summary for commit 252892c9
+[2026-08-31T13:32:22.964Z] INFO  [Summarizer] [trace=f86badc6cd847805011a345d507f35d4] Context: transcript=30, files=14, lines=152+13
+[2026-08-31T13:32:22.964Z] WARN  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-31T13:32:24.967Z] INFO  [Summarizer] [trace=f86badc6cd847805011a345d507f35d4] Generating summary for commit 252892c9
+[2026-08-31T13:32:24.967Z] INFO  [Summarizer] [trace=f86badc6cd847805011a345d507f35d4] Context: transcript=30, files=14, lines=152+13
+[2026-08-31T13:32:24.968Z] ERROR [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-31T13:32:24.969Z] WARN  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Saving summary with empty topics + llm-failed marker for commit 252892c9
+[2026-08-31T13:32:24.970Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] API summary generated (2.0s)
+[2026-08-31T13:32:24.971Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-31T13:32:24.971Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-31T13:32:24.972Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-31T13:32:24.972Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Note association: detected 0 note(s): []
+[2026-08-31T13:32:24.973Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Reference association: detected 0 ref(s) for branch main
+[2026-08-31T13:32:24.983Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Summary built for 252892c9: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-31T13:32:25.138Z] INFO  [MetadataManager] [trace=f86badc6cd847805011a345d507f35d4] Manifest updated: main/clue-for-combinatiion-puzzle-updated-252892c9.md (commit)
+[2026-08-31T13:32:25.138Z] INFO  [FolderStorage] [trace=f86badc6cd847805011a345d507f35d4] Markdown generated: main/clue-for-combinatiion-puzzle-updated-252892c9.md
+[2026-08-31T13:32:25.143Z] INFO  [FolderStorage] [trace=f86badc6cd847805011a345d507f35d4] Wrote 4 files, deleted 0 (Add summary for 252892c9: clue for combinatiion puzzle updated)
+[2026-08-31T13:32:25.144Z] INFO  [SummaryStore] [trace=f86badc6cd847805011a345d507f35d4] Summary stored successfully for commit 252892c9
+[2026-08-31T13:32:25.151Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Summary stored successfully for commit 252892c9 (168ms, 0 plans, 0 notes, 0 references)
+[2026-08-31T13:32:25.151Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] === Pipeline completed in 2.7s ===
+[2026-08-31T13:32:25.151Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] === Summary content (0 topics) ===
+[2026-08-31T13:32:25.159Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] Processed 1 queue entries
+[2026-08-31T13:32:25.162Z] INFO  [PushExecutor] [trace=f86badc6cd847805011a345d507f35d4] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-31T13:32:25.171Z] INFO  [PushExecutor] [trace=f86badc6cd847805011a345d507f35d4] processPushPending(post-queue): 7 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-31T13:32:25.192Z] INFO  [PushExecutor] [trace=f86badc6cd847805011a345d507f35d4] processPushPending(post-queue): not signed in — keeping 7 entries for later
+[2026-08-31T13:32:25.307Z] INFO  [GitOps] [trace=f86badc6cd847805011a345d507f35d4] Commit 252892c9: clue for combinatiion puzzle updated
+[2026-08-31T13:32:25.434Z] INFO  [StorageFactory] [trace=f86badc6cd847805011a345d507f35d4] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-08-31T13:32:25.668Z] INFO  [QueueWorker] [trace=f86badc6cd847805011a345d507f35d4] === Queue worker finished ===
+[2026-08-31T13:32:25.673Z] INFO  [SessionStartHook] [trace=f86badc6cd847805011a345d507f35d4] Briefing cache not warmed — nothing to brief on this branch
+[2026-08-31T13:32:25.863Z] INFO  [SessionSync] [trace=f86badc6cd847805011a345d507f35d4] session sync: not uploading — no API key configured
+[2026-08-31T13:32:25.887Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-31T13:32:25.889Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-31T13:32:25.890Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-31T13:32:25.891Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)

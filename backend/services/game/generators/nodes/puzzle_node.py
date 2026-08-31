@@ -101,19 +101,23 @@ class PuzzleNode:
                     except Exception as e:
                         print(f"Error recalculating card riddle code: {e}")
 
-                if "elementalMapping" in config_data and "elementSequence" in config_data:
+                if "elementalMapping" in config_data:
                     try:
                         mapping = config_data["elementalMapping"]
-                        sequence = config_data["elementSequence"]
+                        style = config_data.get("clueStyle", "cylinder")
                         
-                        # Build the true string by looking up the digit for each element
-                        true_combo = "".join(str(mapping.get(element, 0)) for element in sequence)
-                        
-                        if config_data.get("correctCombination") != true_combo:
-                            print(f"⚠️ Correcting LLM elemental combo for {puzzle_id}: {config_data.get('correctCombination')} -> {true_combo}")
+                        # If scales, we MUST order from lightest (smallest number) to heaviest
+                        if style == "scales":
+                            sorted_elements = sorted(mapping.keys(), key=lambda k: mapping[k])
+                            config_data["elementSequence"] = sorted_elements
+                            
+                        # Build the code from the sequence to guarantee it matches
+                        if "elementSequence" in config_data:
+                            sequence = config_data["elementSequence"]
+                            true_combo = "".join(str(mapping.get(el, 0)) for el in sequence)
                             config_data["correctCombination"] = true_combo
                     except Exception as e:
-                        print(f"Error recalculating elemental lock code: {e}")
+                        print(f"Error correcting elemental lock: {e}")
 
                 if puzzle_id:
                     config_map[puzzle_id] = config_data

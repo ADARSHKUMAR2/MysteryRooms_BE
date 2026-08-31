@@ -108,7 +108,18 @@ EXAMPLE CLUES FOR LIGHT PUZZLES:
 - "The light of the sun is a beacon of hope. It guides the way, bending the path until it reaches the crystal."
 
 SPECIAL RULES FOR COMBINATION LOCK (ELEMENTAL NUMBER):
-These puzzles require the player to type a 4-digit code into a keypad. The player discovers the code by reading an elemental story, and matching the elements to numbers found elsewhere in the room.
+These puzzles are opened by pressing a 4-digit code. The player discovers the code through environmental clues.
+Check the `clueStyle` in the puzzle config!
+
+IF clueStyle == "cylinder":
+1. Write an ancient poem or mythological story.
+2. Reference the 4 elements (Fire, Leaf, Water, Sun) in the exact order specified by `elementSequence`.
+3. Example: "First, the river flowed (Water). From mud sprang the harvest (Leaf), stretching to the dawn (Sun). Finally, it turned to ash in the flame (Fire)."
+
+IF clueStyle == "scales":
+1. DO NOT write a chronological story about the elements.
+2. Instead, write a cryptic hint about "Weighing the elements against the burdens of iron, from the lightest feather to the heaviest stone."
+3. Example: "The Gods demand balance. Look to the hanging scales of Ma'at. Order their elements from the lightest feather to the heaviest burden of iron, and the vault shall open."
 
 Your clues for combination_lock MUST:
 1. Be written as an ancient poem, prophecy, or mythological story.

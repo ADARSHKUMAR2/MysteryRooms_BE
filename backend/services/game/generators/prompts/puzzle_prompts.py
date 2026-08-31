@@ -75,9 +75,13 @@ CONFIGURATION RULES BY TYPE:
 
 - combination_lock: This is an ELEMENTAL NUMBER lock.
   REQUIRED FIELDS in config:
-  • elementalMapping: A dictionary mapping the 4 elements ["Fire", "Leaf", "Water", "Sun"] to 4 unique random digits (0-9).
-  • elementSequence: A list of the 4 elements in the exact chronological order of the solution.
-  • correctCombination: A string of EXACTLY 4 digits representing the final keypad code.
+  • clueStyle: Randomly choose either "cylinder" OR "scales"
+  • elementalMapping: A dictionary mapping ["Fire", "Leaf", "Water", "Sun"] to 4 UNIQUE random digits between 1 and 5.
+  • elementSequence: A list of the 4 elements. If clueStyle is 'scales', sequence is strictly ordered from smallest digit to largest digit.
+  • correctCombination: A string of EXACTLY 4 digits matching the sequence.
+
+  Example: {{"id": "main_lock", "config": {{"clueStyle": "scales", "elementalMapping": {{"Fire": 4, "Leaf": 1, "Water": 9, "Sun": 2}}, "elementSequence": ["Leaf", "Sun", "Fire", "Water"], "correctCombination": "1249"}}}}
+
 
   RULES:
   1. Assign a unique random digit (0-9) to each of the 4 elements in `elementalMapping`.

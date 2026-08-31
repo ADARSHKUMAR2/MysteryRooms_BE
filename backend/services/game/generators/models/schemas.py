@@ -25,9 +25,11 @@ class RotatingStatueConfig(BaseModel):
     correctRotationSteps: int = Field(description="Number of 90-degree rotations (0-3)")
 
 class CombinationLockConfig(BaseModel):
-    elementalMapping: Dict[str, int] = Field(description="Maps 'Fire', 'Leaf', 'Water', 'Sun' to random digits 0-9")
+    elementalMapping: Dict[str, int] = Field(description="Maps 'Fire', 'Leaf', 'Water', 'Sun' to random digits (1-5)")
     elementSequence: List[str] = Field(description="The sequence of the 4 elements")
-    correctCombination: str = Field(description="3-4 digit combination code derived from the mapping")
+    clueStyle: str = Field(description="Must be 'cylinder' (story-based) or 'scales' (weight-based)")
+    correctCombination: str = Field(description="4 digit combination code derived from the mapping")
+
 
 class PatternStartPosition(BaseModel):
     row: int = Field(description="Row position (0-4)")
