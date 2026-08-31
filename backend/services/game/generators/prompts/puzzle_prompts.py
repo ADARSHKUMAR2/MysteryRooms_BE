@@ -38,7 +38,7 @@ AVAILABLE PUZZLE TYPES:
 {', '.join(PuzzlePromptBuilder.VALID_PUZZLE_TYPES)}
 
 CRITICAL RULES:
-1. You ABSOLUTELY MUST include exactly ONE "card_deck_riddle" puzzle, one "light_puzzle" puzzle and one "combination_lock" puzzle in your response. These are mandatory.
+1. You ABSOLUTELY MUST include exactly ONE "map_coordinates" puzzle, one "light_puzzle" puzzle and one "combination_lock" puzzle in your response. These are mandatory.
 2. At least ONE puzzle must have empty dependencies [] (the starting puzzle).
 3. At least ONE puzzle must unlock ["victory"] (the ending puzzle).
 4. Each puzzle must have a unique ID (e.g., "entrance_statue", "pharaoh_cards").
@@ -167,8 +167,12 @@ Example: {{"id": "sun_beam_chamber", "config": {{"requiresAlignment": true, "mir
 - hidden_compartment:
   Example: {{"id": "secret_door", "config": {{"requiresKey": true}}}}
 
-- map_coordinates:
-  Example: {{"id": "treasure_map", "config": {{"correctCoordinates": "N23-E45"}}}}
+- map_coordinates: This is an ASTROLABE GLOBE puzzle.
+  REQUIRED FIELDS in config:
+  • latitude: A short string representing North/South (e.g., "N29", "S45")
+  • longitude: A short string representing East/West (e.g., "E31", "W12")
+  
+  Example: {{"id": "astrolabe_puzzle", "config": {{"latitude": "N29", "longitude": "E31"}}}}
 
 - pressure_plate:
   Example: {{"id": "floor_puzzle", "config": {{"correctPattern": [1, 2, 3, 4]}}}}

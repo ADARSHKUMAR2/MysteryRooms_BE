@@ -47,7 +47,8 @@ class HiddenCompartmentConfig(BaseModel):
     requiresKey: bool = Field(description="Whether a key is required")
 
 class MapCoordinatesConfig(BaseModel):
-    correctCoordinates: str = Field(description="Coordinate string (e.g., 'N23-E45')")
+    latitude: str = Field(description="Latitude (e.g., 'N23', 'S45')")
+    longitude: str = Field(description="Longitude (e.g., 'E12', 'W99')")
 
 class LightPuzzleConfig(BaseModel):
     # correctTorchOrder: Optional[List[int]] = Field(default=None, description="Order of torches")
