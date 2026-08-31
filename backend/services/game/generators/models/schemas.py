@@ -25,7 +25,9 @@ class RotatingStatueConfig(BaseModel):
     correctRotationSteps: int = Field(description="Number of 90-degree rotations (0-3)")
 
 class CombinationLockConfig(BaseModel):
-    correctCombination: str = Field(description="3-4 digit combination code")
+    elementalMapping: Dict[str, int] = Field(description="Maps 'Fire', 'Leaf', 'Water', 'Sun' to random digits 0-9")
+    elementSequence: List[str] = Field(description="The sequence of the 4 elements")
+    correctCombination: str = Field(description="3-4 digit combination code derived from the mapping")
 
 class PatternStartPosition(BaseModel):
     row: int = Field(description="Row position (0-4)")

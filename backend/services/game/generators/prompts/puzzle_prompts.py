@@ -38,7 +38,7 @@ AVAILABLE PUZZLE TYPES:
 {', '.join(PuzzlePromptBuilder.VALID_PUZZLE_TYPES)}
 
 CRITICAL RULES:
-1. You ABSOLUTELY MUST include exactly ONE "card_deck_riddle" puzzle and one "light_puzzle" puzzle in your response. These are mandatory.
+1. You ABSOLUTELY MUST include exactly ONE "card_deck_riddle" puzzle, one "light_puzzle" puzzle and one "combination_lock" puzzle in your response. These are mandatory.
 2. At least ONE puzzle must have empty dependencies [] (the starting puzzle).
 3. At least ONE puzzle must unlock ["victory"] (the ending puzzle).
 4. Each puzzle must have a unique ID (e.g., "entrance_statue", "pharaoh_cards").
@@ -73,8 +73,26 @@ CONFIGURATION RULES BY TYPE:
 - rotating_statue:
   Example: {{"id": "entrance_statue", "config": {{"correctRotationSteps": 2}}}}
 
-- combination_lock:
-  Example: {{"id": "main_lock", "config": {{"correctCombination": "1234"}}}}
+- combination_lock: This is an ELEMENTAL NUMBER lock.
+  REQUIRED FIELDS in config:
+  • elementalMapping: A dictionary mapping the 4 elements ["Fire", "Leaf", "Water", "Sun"] to 4 unique random digits (0-9).
+  • elementSequence: A list of the 4 elements in the exact chronological order of the solution.
+  • correctCombination: A string of EXACTLY 4 digits representing the final keypad code.
+
+  RULES:
+  1. Assign a unique random digit (0-9) to each of the 4 elements in `elementalMapping`.
+  2. Decide the sequence of the 4 elements (e.g., ["Water", "Fire", "Leaf", "Sun"]). This is `elementSequence`.
+  3. The `correctCombination` MUST perfectly match the digits mapped to the `elementSequence`.
+     (e.g., If Water=9, Fire=4, Leaf=1, Sun=2, the combination is "9412").
+
+  Example: {{
+    "id": "main_lock", 
+    "config": {{
+      "elementalMapping": {{"Fire": 4, "Leaf": 1, "Water": 9, "Sun": 2}},
+      "elementSequence": ["Water", "Fire", "Leaf", "Sun"],
+      "correctCombination": "9412"
+    }}
+  }}
 
 - light_puzzle: This is a LASER REFLECTION puzzle where a beam of light must bounce off mirrors to hit a target.
   

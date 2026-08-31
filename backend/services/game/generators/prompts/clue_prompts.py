@@ -107,6 +107,21 @@ EXAMPLE CLUES FOR LIGHT PUZZLES:
 - "Four sentinels of glass stand in the dark. Turn their faces to catch the dawn, passing the blazing torch from one to the next until the crystal awakens."
 - "The light of the sun is a beacon of hope. It guides the way, bending the path until it reaches the crystal."
 
+SPECIAL RULES FOR COMBINATION LOCK (ELEMENTAL NUMBER):
+These puzzles require the player to type a 4-digit code into a keypad. The player discovers the code by reading an elemental story, and matching the elements to numbers found elsewhere in the room.
+
+Your clues for combination_lock MUST:
+1. Be written as an ancient poem, prophecy, or mythological story.
+2. Reference the 4 elements (Fire, Leaf, Water, Sun) in the exact order specified by the `elementSequence` array in the puzzle config.
+3. Use poetic synonyms (e.g., for Fire: "blazing inferno", "crimson spark", "flame").
+4. Imbue a clear chronological sequence (first, then, before, finally) so the player knows the order to read the elements.
+5. DO NOT mention the actual numbers in the story. The player will find the numbers engraved on a cylinder in the room.
+
+EXAMPLE CLUES FOR ELEMENTAL LOCK:
+- If elementSequence is ["Water", "Leaf", "Sun", "Fire"]: "First, the great river flowed (Water), giving drink to the barren dirt. From the mud sprang the emerald harvest (Leaf), stretching upwards to greet the golden dawn (Sun). But all that grows must eventually return to ash in the scorching heat of the crimson flame (Fire)."
+- If combination is "Water,Leaf,Sun,Fire": "First, the great river flowed (Water), giving drink to the barren dirt. From the mud sprang the emerald harvest (Leaf), stretching upwards to greet the golden dawn (Sun). But all that grows must eventually return to ash in the scorching heat of the crimson flame (Fire)."
+- If combination is "Fire,Sun,Leaf,Water": "First, the fire burned (Fire), scorching the earth. Then, the sun shone (Sun), illuminating the land. And the leaf fell (Leaf), bringing life to the barren soil. But the waters must flow (Water) to nourish the plant."
+
 CLUE TYPE GUIDELINES:
 - inscription: Text carved on walls, tablets, scrolls
 - visual: Symbols, drawings, patterns players observe
