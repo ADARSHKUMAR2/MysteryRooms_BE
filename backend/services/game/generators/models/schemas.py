@@ -12,8 +12,8 @@ class PuzzleStructureOutput(BaseModel):
     position: str = Field(description="Location in the room")
     dependencies: List[str] = Field(description="IDs of puzzles that must be solved first")
     unlocks: List[str] = Field(description="IDs of puzzles unlocked, or ['victory']")
-    hint: Optional[str] = Field(default=None, description="Optional hint text")
-
+    hint: Optional[str] = Field(default=None, description="A completely explicit, direct answer instructing the player exactly how to solve this puzzle.")
+    
 class PuzzleListOutput(BaseModel):
     puzzles: List[PuzzleStructureOutput]
 

@@ -122,6 +122,49 @@ class PuzzleNode:
             puzzle_id = puzzle.get("id")
             if puzzle_id in config_map:
                 puzzle["config"] = config_map[puzzle_id]
+                p_type = puzzle.get("type", "")
+                cfg = puzzle["config"]
+                
+                direct_hint = "Interact with the object to solve it."
+                
+                if p_type == "combination_lock":
+                        style = cfg.get("clueStyle", "cylinder")
+                        seq = cfg.get("elementSequence", [])
+                        if style == "scales":
+                            direct_hint = "Look at the scales. Count the iron weights on each. Enter the counts in order from the LIGHTEST scale to the HEAVIEST scale."
+                        else:
+                            direct_hint = f"Read the story to find the element order: {', '.join(seq)}. Check the cylinder to see what number belongs to each element, then enter that code!"
+                    
+                elif p_type == "rotating_statue" and "correctRotationSteps" in cfg:
+                    direct_hint = f"Look at the visual clue nearby. You must rotate this statue {cfg['correctRotationSteps']} times to align it properly."
+                
+                elif p_type == "pressure_plate" and "correctPattern" in cfg:
+                    direct_hint = "Read the poem on the wall. It mentions the symbols in a specific order. You must step on the floor plates matching that exact story."
+                
+                elif p_type == "map_coordinates":
+                    direct_hint = "Find the physical papyrus scroll map in the room. Pick it up to read the coordinates, then interact with the Bronze Astrolabe Globe to enter them."
+                
+                elif p_type in ["symbol_sequence", "hieroglyph_sequence"] and "correctSequence" in cfg:
+                    direct_hint = f"Look for a grid of symbols. You must press these exact symbols in this order: {', '.join(cfg['correctSequence'])}."
+                
+                elif p_type == "card_deck_riddle" and "riddleRules" in cfg:
+                    try:
+                        rules = cfg["riddleRules"]
+                        rules.sort(key=lambda x: x.get("column", 0))
+                        hint_parts = [f"Col {r['column']+1}: Count {r['suit']}" for r in rules]
+                        direct_hint = f"Look at the 4x4 card grid. To get the code, follow this rule: {', '.join(hint_parts)}. Then type those 4 numbers into the keypad!"
+                    except Exception:
+                        direct_hint = "Count the specific card suits in each column of the grid to get a 4-digit code."
+                
+                elif p_type == "light_puzzle":
+                    direct_hint = "Interact with the tall standing mirrors. Left-click them while holding them to rotate the glass until the laser beam bounces into the target crystal."
+                
+                elif p_type == "hidden_compartment":
+                    direct_hint = "This compartment is sealed tight. You must search the tomb until you find a physical Tomb Key to unlock it."
+                    
+                # Overwrite the vague AI hint with our direct, explicit answer
+                puzzle["hint"] = direct_hint
+                # --------------------------------------------
             else:
                 print(f"⚠️ No config found for puzzle: {puzzle_id}")
                 puzzle["config"] = {}
