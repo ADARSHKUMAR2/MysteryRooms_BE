@@ -28,31 +28,86 @@ class AIGenerator:
     """
     
     def __init__(self):
-        """Initialize LLM, nodes, and build graph"""
+        """Initialize LLMs, nodes, and build graph"""
         
-        # Initialize LLM
-        self.llm = ChatGroq(
-            api_key=settings.GROQ_API_KEY,
-            model=settings.GROQ_MODEL,
-            temperature=settings.GROQ_TEMPERATURE,
-            max_tokens=settings.GROQ_MAX_TOKENS,
-            timeout=settings.GROQ_TIMEOUT
-        )
+        # Initialize a list of fallback LLMs
+        self.llm_chain = []
+        for model_name in settings.GROQ_MODELS:
+            self.llm_chain.append(
+                ChatGroq(
+                    api_key=settings.GROQ_API_KEY,
+                    model=model_name,
+                    temperature=settings.GROQ_TEMPERATURE,
+                    max_tokens=settings.GROQ_MAX_TOKENS,
+                    timeout=settings.GROQ_TIMEOUT,
+                    max_retries=1 # We handle retries ourselves by swapping models
+                )
+            )
+            
+        # We start with the first model in the chain
+        self.current_model_index = 0
+        self._initialize_nodes_and_graph(self.llm_chain[self.current_model_index])
         
-        # Initialize validator
         self.validator = MysteryValidator()
-        
-        # Initialize nodes
-        self.story_node = StoryNode(self.llm)
-        self.puzzle_node = PuzzleNode(self.llm)
-        self.clue_node = ClueNode(self.llm)
-        self.validation_node = ValidationNode(self.validator)
-        
-        # Fallback generator
         self.fallback_generator = MockMysteryGenerator() if settings.ENABLE_FALLBACK_GENERATOR else None
         
-        # Build workflow graph
+    def _initialize_nodes_and_graph(self, active_llm):
+        """Re-initializes the nodes with the current active LLM"""
+        self.story_node = StoryNode(active_llm)
+        self.puzzle_node = PuzzleNode(active_llm)
+        self.clue_node = ClueNode(active_llm)
+        self.validation_node = ValidationNode(MysteryValidator())
         self.graph = self._build_graph()
+
+    def generate(self, room: str, difficulty: int, player_count: int = 1) -> MysteryConfig:
+        
+        print(f"🤖 AI Generator: Starting mystery generation (difficulty={difficulty})...")
+        
+        # Reset to the best model at the start of a new generation request
+        self.current_model_index = 0
+        self._initialize_nodes_and_graph(self.llm_chain[self.current_model_index])
+
+        # Loop through our fallback chain of models
+        while self.current_model_index < len(self.llm_chain):
+            current_model_name = settings.GROQ_MODELS[self.current_model_index]
+            print(f"🧠 Attempting generation with model: {current_model_name}")
+            
+            initial_state = {
+                "room": room,
+                "difficulty": difficulty,
+                "player_count": player_count,
+                "retry_count": 0
+            }
+            
+            try:
+                # Run the graph with the current model
+                final_state = self.graph.invoke(initial_state)
+                
+                validation_result = final_state.get("validation_result")
+                
+                if validation_result and validation_result.is_valid:
+                    print(f"✅ AI generation successful with {current_model_name}!")
+                    return self._build_mystery_from_state(final_state)
+                else:
+                    print(f"⚠️ Validation failed for {current_model_name}, but no API crash. Skipping to next model...")
+                    
+            except Exception as e:
+                # If we get a 429 Rate Limit, JSON Parse error, or Timeout, it catches here!
+                error_msg = str(e)
+                print(f"❌ API/Generation error with {current_model_name}: {error_msg[:100]}...")
+            
+            # If we reached here, the current model failed. Move to the next one!
+            self.current_model_index += 1
+            if self.current_model_index < len(self.llm_chain):
+                print(f"🔄 Swapping LLM engine to {settings.GROQ_MODELS[self.current_model_index]}...")
+                self._initialize_nodes_and_graph(self.llm_chain[self.current_model_index])
+                
+        # If we exhausted all models in the list...
+        print("🚨 ALL AI MODELS FAILED. Falling back to MockMysteryGenerator.")
+        if self.fallback_generator:
+            return self.fallback_generator.generate(room, difficulty, player_count)
+        else:
+            raise Exception("Mystery generation failed across all models, and fallback is disabled.")
     
     def _build_graph(self) -> Any:
         """Build the LangGraph workflow"""
@@ -84,63 +139,7 @@ class AIGenerator:
             }
         )
         
-        return workflow.compile()
-    
-    def generate(self, room: str, difficulty: int, player_count: int = 1) -> MysteryConfig:
-        """
-        Generate a mystery using AI workflow
-        
-        Args:
-            room: Room type (e.g., "mummy_tomb")
-            difficulty: Difficulty level 1-5
-            player_count: Number of players
-        
-        Returns:
-            MysteryConfig object
-        
-        Raises:
-            Exception: If generation fails after retries
-        """
-        
-        print(f"🤖 AI Generator: Starting mystery generation (difficulty={difficulty})...")
-        
-        # Initial state
-        initial_state = {
-            "room": room,
-            "difficulty": difficulty,
-            "player_count": player_count,
-            "retry_count": 0
-        }
-        
-        try:
-            # Run the graph
-            final_state = self.graph.invoke(initial_state)
-            
-            # Check if validation passed
-            validation_result = final_state.get("validation_result")
-            
-            if validation_result and validation_result.is_valid:
-                print("✅ AI generation successful!")
-                return self._build_mystery_from_state(final_state)
-            else:
-                print("⚠️ AI generation validation failed after retries")
-                
-                # Use fallback if enabled
-                if self.fallback_generator:
-                    print("🔄 Using fallback MockMysteryGenerator...")
-                    return self.fallback_generator.generate(room, difficulty, player_count)
-                else:
-                    raise Exception("Mystery generation failed validation")
-        
-        except Exception as e:
-            print(f"❌ AI generation error: {e}")
-            
-            # Use fallback if enabled
-            if self.fallback_generator:
-                print("🔄 Using fallback MockMysteryGenerator...")
-                return self.fallback_generator.generate(room, difficulty, player_count)
-            else:
-                raise
+        return workflow.compile()    
     
     def _build_mystery_from_state(self, state: Dict[str, Any]) -> MysteryConfig:
         """Build final MysteryConfig from workflow state"""

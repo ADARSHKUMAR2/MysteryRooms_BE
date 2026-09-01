@@ -43,12 +43,8 @@ class PuzzleNode:
             )
         )
         
-        try:
-            result: PuzzleListOutput = self.structured_structure_llm.invoke([system_msg, human_msg])
-            return [p.model_dump() for p in result.puzzles]
-        except Exception as e:
-            print(f"⚠️ Puzzle structure generation error: {e}")
-            return self._get_fallback_puzzles()
+        result: PuzzleListOutput = self.structured_structure_llm.invoke([system_msg, human_msg])
+        return [p.model_dump() for p in result.puzzles]
     
     def _generate_puzzle_configs(self, puzzles: List[Dict], validation_errors: List[str]) -> List[Dict]:
         if not puzzles:
@@ -62,90 +58,79 @@ class PuzzleNode:
             )
         )
         
-        try:
-            result: PuzzleConfigListOutput = self.structured_config_llm.invoke([system_msg, human_msg])
-            
-            # Create a mapping of puzzle ID to config
-            config_map = {}
-            for config_item in result.configs:
-                config_dict = config_item.model_dump()
-                puzzle_id = config_dict.get("id")
-                config_data = config_dict.get("config", {})
-                if puzzle_id:
-                    config_map[puzzle_id] = config_data
-            
-                # --- FIX 1: FLATTEN GRID CARDS ---
-                if "gridCards" in config_data:
-                    cards = config_data["gridCards"]
-                    if len(cards) > 0 and isinstance(cards[0], list):
-                        print(f"Flattening 2D gridCards array from LLM for {puzzle_id}...")
-                        flat_cards = []
-                        for row in cards:
-                            flat_cards.extend(row)
-                        config_data["gridCards"] = flat_cards
+        result: PuzzleConfigListOutput = self.structured_config_llm.invoke([system_msg, human_msg])
+        
+        # Create a mapping of puzzle ID to config
+        config_map = {}
+        for config_item in result.configs:
+            config_dict = config_item.model_dump()
+            puzzle_id = config_dict.get("id")
+            config_data = config_dict.get("config", {})
+            if puzzle_id:
+                config_map[puzzle_id] = config_data
+        
+            # --- FIX 1: FLATTEN GRID CARDS ---
+            if "gridCards" in config_data:
+                cards = config_data["gridCards"]
+                if len(cards) > 0 and isinstance(cards[0], list):
+                    print(f"Flattening 2D gridCards array from LLM for {puzzle_id}...")
+                    flat_cards = []
+                    for row in cards:
+                        flat_cards.extend(row)
+                    config_data["gridCards"] = flat_cards
 
-                # --- FIX 2: FORCE CORRECT MATH FOR CARD RIDDLE CODE ---
-                if "riddleRules" in config_data:
-                    try:
-                        rules = config_data["riddleRules"]
-                        # Sort rules by column to ensure the code is in the right order (col 0, 1, 2, 3)
-                        rules.sort(key=lambda x: x.get("column", 0))
-                        
-                        # Concatenate the counts to form the true correct code
-                        true_code = "".join(str(rule.get("count", 0)) for rule in rules)
-                        
-                        # Overwrite the LLM's hallucinated code with the mathematically correct one
-                        if config_data.get("correctCode") != true_code:
-                            print(f"⚠️ Correcting LLM hallucinated code for {puzzle_id}: {config_data.get('correctCode')} -> {true_code}")
-                            config_data["correctCode"] = true_code
-                    except Exception as e:
-                        print(f"Error recalculating card riddle code: {e}")
-
-                if "elementalMapping" in config_data:
-                    try:
-                        mapping = config_data["elementalMapping"]
-                        style = config_data.get("clueStyle", "cylinder")
-                        
-                        # If scales, we MUST order from lightest (smallest number) to heaviest
-                        if style == "scales":
-                            sorted_elements = sorted(mapping.keys(), key=lambda k: mapping[k])
-                            config_data["elementSequence"] = sorted_elements
-                            
-                        # Build the code from the sequence to guarantee it matches
-                        if "elementSequence" in config_data:
-                            sequence = config_data["elementSequence"]
-                            true_combo = "".join(str(mapping.get(el, 0)) for el in sequence)
-                            config_data["correctCombination"] = true_combo
-                    except Exception as e:
-                        print(f"Error correcting elemental lock: {e}")
-
-                if puzzle_id:
-                    config_map[puzzle_id] = config_data
-            
-            # Merge configs into puzzles by matching IDs
-            for puzzle in puzzles:
-                puzzle_id = puzzle.get("id")
-                if puzzle_id in config_map:
-                    puzzle["config"] = config_map[puzzle_id]
-                else:
-                    print(f"⚠️ No config found for puzzle: {puzzle_id}")
-                    puzzle["config"] = {}
+            # --- FIX 2: FORCE CORRECT MATH FOR CARD RIDDLE CODE ---
+            if "riddleRules" in config_data:
+                try:
+                    rules = config_data["riddleRules"]
+                    # Sort rules by column to ensure the code is in the right order (col 0, 1, 2, 3)
+                    rules.sort(key=lambda x: x.get("column", 0))
                     
-            return puzzles
-        except Exception as e:
-            print(f"⚠️ Puzzle config generation error: {e}")
-            # Provide empty configs as fallback
-            for puzzle in puzzles:
+                    # Concatenate the counts to form the true correct code
+                    true_code = "".join(str(rule.get("count", 0)) for rule in rules)
+                    
+                    # Overwrite the LLM's hallucinated code with the mathematically correct one
+                    if config_data.get("correctCode") != true_code:
+                        print(f"⚠️ Correcting LLM hallucinated code for {puzzle_id}: {config_data.get('correctCode')} -> {true_code}")
+                        config_data["correctCode"] = true_code
+                except Exception as e:
+                    print(f"Error recalculating card riddle code: {e}")
+
+            if "elementalMapping" in config_data:
+                try:
+                    mapping = config_data["elementalMapping"]
+                    style = config_data.get("clueStyle", "cylinder")
+                    
+                    # If scales, we MUST order from lightest (smallest number) to heaviest
+                    if style == "scales":
+                        sorted_elements = sorted(mapping.keys(), key=lambda k: mapping[k])
+                        config_data["elementSequence"] = sorted_elements
+                        
+                    # Build the code from the sequence to guarantee it matches
+                    if "elementSequence" in config_data:
+                        sequence = config_data["elementSequence"]
+                        true_combo = "".join(str(mapping.get(el, 0)) for el in sequence)
+                        config_data["correctCombination"] = true_combo
+                except Exception as e:
+                    print(f"Error correcting elemental lock: {e}")
+
+            if puzzle_id:
+                config_map[puzzle_id] = config_data
+        
+        # Merge configs into puzzles by matching IDs
+        for puzzle in puzzles:
+            puzzle_id = puzzle.get("id")
+            if puzzle_id in config_map:
+                puzzle["config"] = config_map[puzzle_id]
+            else:
+                print(f"⚠️ No config found for puzzle: {puzzle_id}")
                 puzzle["config"] = {}
-            return puzzles
-        except Exception as e:
-            print(f"⚠️ Puzzle config generation error: {e}")
-            # Provide empty configs as fallback
-            for puzzle in puzzles:
-                puzzle["config"] = {}
-            return puzzles
+                
+        return puzzles
             
     def _get_fallback_puzzles(self) -> List[Dict]:
+
+        print(f"⚠️ FALLBACK PUZZLES !! ERRRROOOORRRRR")
         return [
             {
                 "id": "entrance_statue", "type": "rotating_statue", "position": "entrance_hall",

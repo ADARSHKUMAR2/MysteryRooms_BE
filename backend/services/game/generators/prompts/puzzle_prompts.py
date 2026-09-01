@@ -38,12 +38,37 @@ AVAILABLE PUZZLE TYPES:
 {', '.join(PuzzlePromptBuilder.VALID_PUZZLE_TYPES)}
 
 CRITICAL RULES:
-1. You ABSOLUTELY MUST include exactly ONE "map_coordinates" puzzle, one "light_puzzle" puzzle and one "combination_lock" puzzle in your response. These are mandatory.
-2. At least ONE puzzle must have empty dependencies [] (the starting puzzle).
-3. At least ONE puzzle must unlock ["victory"] (the ending puzzle).
-4. Each puzzle must have a unique ID (e.g., "entrance_statue", "pharaoh_cards").
-5. Dependencies must reference existing puzzle IDs you have created.
-6. No circular dependencies allowed.
+1. You ABSOLUTELY MUST include exactly ONE "map_coordinates" puzzle, one "light_puzzle" puzzle and one "combination_lock" puzzle.
+2. Every puzzle must have a unique ID (e.g., "entrance_statue", "pharaoh_cards").
+3. Dependencies must reference existing puzzle IDs you have created.
+4. No circular dependencies allowed.
+5. At least ONE puzzle in the starting room must have empty dependencies [].
+6. The final puzzle must unlock ["victory"].
+
+TOMB TOPOLOGY & SPATIAL PROGRESSION (CRITICAL!):
+The tomb has a specific physical layout. You MUST place puzzles logically so the player can actually walk to them.
+
+ROOM CONNECTIONS:
+- entrance_hall connects to: burial_chamber, west_chamber, treasure_room
+- west_chamber connects to: treasure_room, secret_passage
+- treasure_room connects to: main_chamber
+
+DOOR UNLOCKING MECHANICS:
+Doors between rooms are locked. To place a puzzle in a new room, the player MUST first unlock the door to that room using a puzzle in their current room.
+When a puzzle opens a door, add a special string to its `unlocks` array in this format: "door_[currentRoom]_to_[targetRoom]".
+(Example: "door_entrance_hall_to_west_chamber")
+
+There are 3 ways a puzzle can open a door:
+1. A physical mechanism: (e.g., pressure_plate or rotating_statue unlocks the door directly).
+2. A hidden key: (e.g., A hidden_compartment puzzle unlocks the door).
+3. A combination code: (e.g., A combination_lock unlocks the door).
+
+EXAMPLE LOGICAL FLOW:
+1. Puzzle A (type: rotating_statue, position: entrance_hall, unlocks: ["door_entrance_hall_to_west_chamber", "Puzzle_B"])
+2. Puzzle B (type: combination_lock, position: west_chamber, dependencies: ["Puzzle_A"], unlocks: ["door_west_chamber_to_secret_passage", "Puzzle_C"])
+3. Puzzle C (type: light_puzzle, position: secret_passage, dependencies: ["Puzzle_B"], unlocks: ["victory"])
+
+Ensure your `dependencies` and `unlocks` arrays strictly follow this physical map layout! Never place a puzzle in a room if the player hasn't unlocked the door to get there yet.
 
 AVAILABLE POSITIONS:
 {', '.join(PuzzlePromptBuilder.VALID_POSITIONS)}

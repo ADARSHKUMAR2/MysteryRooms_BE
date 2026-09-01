@@ -23,11 +23,7 @@ class ClueNode:
             )
         )
         
-        try:
-            result: ClueListOutput = self.structured_llm.invoke([system_msg, human_msg])
-            state["clues"] = [c.model_dump() for c in result.clues]
-        except Exception as e:
-            print(f"⚠️ Clue generation error: {e}")
-            state["clues"] = []
+        result: ClueListOutput = self.structured_llm.invoke([system_msg, human_msg])
+        state["clues"] = [c.model_dump() for c in result.clues]
         
         return state

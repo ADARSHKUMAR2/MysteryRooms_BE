@@ -15,6 +15,12 @@ class GameSettings(BaseSettings):
     # Groq API Configuration
     GROQ_API_KEY: str
     GROQ_MODEL: str = "openai/gpt-oss-120b"
+    GROQ_MODELS: list[str] = [
+        "openai/gpt-oss-120b",  
+        "openai/gpt-oss-20b",     
+        "llama-3.3-70b-versatile",       
+        "llama-3.1-8b-instant"              
+    ]
     GROQ_TEMPERATURE: float = 0.7
     GROQ_MAX_TOKENS: int = 4000
     GROQ_TIMEOUT: int = 120
