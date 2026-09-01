@@ -5,11 +5,12 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from typing import Dict, Any
 from ..prompts.clue_prompts import CluePromptBuilder
 from ..models.schemas import ClueListOutput
+from langchain_core.language_models import BaseChatModel
 
 class ClueNode:
-    def __init__(self, llm: ChatGroq):
+    def __init__(self, llm: BaseChatModel):
         self.llm = llm
-        self.structured_llm = self.llm.with_structured_output(ClueListOutput)
+        self.structured_llm = self.llm.with_structured_output(ClueListOutput, method="function_calling")
         self.prompt_builder = CluePromptBuilder()
     
     def execute(self, state: Dict[str, Any]) -> Dict[str, Any]:

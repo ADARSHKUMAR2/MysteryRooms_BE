@@ -38,7 +38,7 @@ AVAILABLE PUZZLE TYPES:
 {', '.join(PuzzlePromptBuilder.VALID_PUZZLE_TYPES)}
 
 CRITICAL RULES:
-1. You ABSOLUTELY MUST include exactly ONE "map_coordinates" puzzle, one "light_puzzle" puzzle and one "combination_lock" puzzle.
+1. You ABSOLUTELY MUST include exactly ONE "map_coordinates", ONE "light_puzzle", ONE "combination_lock", and ONE "card_deck_riddle". These are mandatory.
 2. Every puzzle must have a unique ID (e.g., "entrance_statue", "pharaoh_cards").
 3. Dependencies must reference existing puzzle IDs you have created.
 4. No circular dependencies allowed.
@@ -134,7 +134,7 @@ Example: {{"id": "sun_beam_chamber", "config": {{"requiresAlignment": true, "mir
 
 - symbol_sequence / hieroglyph_sequence: These are GRID-BASED pattern matching puzzles
 
-  GRID LAYOUT: 40 symbols arranged in 8 columns × 5 rows displayed on a wall
+  GRID LAYOUT: 40 symbols arranged in 8 columns x 5 rows displayed on a wall
 
   REQUIRED FIELDS in config:
   • correctSequence: List of EXACTLY 4 symbols chosen from [{valid_symbols}]. Each symbol MUST be used only ONCE.
@@ -154,9 +154,9 @@ Example: {{"id": "sun_beam_chamber", "config": {{"requiresAlignment": true, "mir
     }}
   }}
 
-- card_deck_riddle: This is a CARD-BASED riddle puzzle using a 4×4 grid of playing cards
+- card_deck_riddle: This is a CARD-BASED riddle puzzle using a 4x4 grid of playing cards
 
-  GRID LAYOUT: 16 playing cards arranged in 4 columns × 4 rows
+  GRID LAYOUT: 16 playing cards arranged in 4 columns x 4 rows
   CARD SUITS: Spades, Hearts, Diamonds, Clubs
   CARD RANKS: A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
 

@@ -24,6 +24,7 @@ dependencies = [
     "pydantic>=2.13.4",
     "pydantic-settings>=2.15.0",
     "honcho>=2.0.0",
+    "langchain-openai>=1.6.0",
 ]
 
 [dependency-groups]

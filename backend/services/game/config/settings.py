@@ -11,33 +11,42 @@ from typing import Optional
 
 class GameSettings(BaseSettings):
     """Game service configuration from environment variables"""
-    
+
     # Groq API Configuration
     GROQ_API_KEY: str
-    GROQ_MODEL: str = "openai/gpt-oss-120b"
     GROQ_MODELS: list[str] = [
-        "openai/gpt-oss-120b",  
-        "openai/gpt-oss-20b",     
-        "llama-3.3-70b-versatile",       
-        "llama-3.1-8b-instant"              
+        "openai/gpt-oss-120b",
+        "qwen/qwen3.6-27b",
+        "openai/gpt-oss-20b",
     ]
-    GROQ_TEMPERATURE: float = 0.7
-    GROQ_MAX_TOKENS: int = 4000
+
+    # --------------------------------
+    # OPENAI CONFIGURATION
+    # --------------------------------
+    OPENAI_API_KEY: Optional[str] = None
+    OPENAI_MODELS: list[str] = [
+        "gpt-4o-mini",
+        "gpt-4o",
+        "gpt-3.5-turbo"
+    ]
+
+    # AI Generation Settings
+    STORY_TEMPERATURE: float = 0.7
+    PUZZLE_TEMPERATURE: float = 0.2
+    GROQ_MAX_TOKENS: int = 6000
     GROQ_TIMEOUT: int = 120
     
-    # AI Generation Settings
     MAX_RETRY_ATTEMPTS: int = 3
     ENABLE_FALLBACK_GENERATOR: bool = True
     LOG_TOKEN_USAGE: bool = True
-    
-    # MongoDB (inherited from existing)
+
+    # MongoDB
     MONGODB_URI: Optional[str] = None
-    
+
     class Config:
-        env_file = "backend/.env" 
+        env_file = "backend/.env"
         case_sensitive = True
         extra = "ignore"
 
 
-# Singleton instance
 settings = GameSettings()

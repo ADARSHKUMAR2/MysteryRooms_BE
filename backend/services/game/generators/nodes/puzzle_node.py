@@ -6,26 +6,18 @@ from typing import Dict, Any, List
 from ..prompts.puzzle_prompts import PuzzlePromptBuilder
 from ..models.schemas import PuzzleListOutput, PuzzleConfigListOutput
 import random
+from langchain_core.language_models import BaseChatModel
 
 class PuzzleNode:
-    def __init__(self, llm: ChatGroq):
+    def __init__(self, llm: BaseChatModel):
         self.llm = llm
-        self.structured_structure_llm = self.llm.with_structured_output(PuzzleListOutput)
-        self.structured_config_llm = self.llm.with_structured_output(PuzzleConfigListOutput)
+        self.structured_structure_llm = self.llm.with_structured_output(PuzzleListOutput, method="function_calling")
+        self.structured_config_llm = self.llm.with_structured_output(PuzzleConfigListOutput, method="function_calling")
         self.prompt_builder = PuzzlePromptBuilder()
     
     def execute(self, state: Dict[str, Any]) -> Dict[str, Any]:
         # Step 1: Select puzzle types and structure
         puzzles = self._generate_puzzle_structure(state)
-        
-        # Step 1.5: Programmatic Enforcement - Ensure card deck puzzle exists!
-        has_card_puzzle = any(p["type"] == "card_deck_riddle" for p in puzzles)
-        if not has_card_puzzle and len(puzzles) > 0:
-            print("⚠️ LLM forgot card_deck_riddle. Injecting it programmatically.")
-            # Convert a non-starting, non-ending puzzle to card deck, or just add one
-            target_index = len(puzzles) - 2 if len(puzzles) > 2 else 0
-            puzzles[target_index]["type"] = "card_deck_riddle"
-            puzzles[target_index]["id"] = "injected_card_riddle"
         
         # Step 2: Generate specific configurations
         validation_errors = state.get("validation_errors", [])
@@ -81,38 +73,43 @@ class PuzzleNode:
 
             # --- FIX 2: FORCE CORRECT MATH FOR CARD RIDDLE CODE ---
             if "riddleRules" in config_data:
-                try:
-                    rules = config_data["riddleRules"]
-                    # Sort rules by column to ensure the code is in the right order (col 0, 1, 2, 3)
-                    rules.sort(key=lambda x: x.get("column", 0))
-                    
-                    # Concatenate the counts to form the true correct code
-                    true_code = "".join(str(rule.get("count", 0)) for rule in rules)
-                    
-                    # Overwrite the LLM's hallucinated code with the mathematically correct one
-                    if config_data.get("correctCode") != true_code:
-                        print(f"⚠️ Correcting LLM hallucinated code for {puzzle_id}: {config_data.get('correctCode')} -> {true_code}")
-                        config_data["correctCode"] = true_code
-                except Exception as e:
-                    print(f"Error recalculating card riddle code: {e}")
-
-            if "elementalMapping" in config_data:
-                try:
-                    mapping = config_data["elementalMapping"]
-                    style = config_data.get("clueStyle", "cylinder")
-                    
-                    # If scales, we MUST order from lightest (smallest number) to heaviest
-                    if style == "scales":
-                        sorted_elements = sorted(mapping.keys(), key=lambda k: mapping[k])
-                        config_data["elementSequence"] = sorted_elements
+                rules = config_data["riddleRules"]
+                rules.sort(key=lambda x: x.get("column", 0))
+                config_data["correctCode"] = "".join(str(rule.get("count", 0)) for rule in rules)
+                
+                suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
+                ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+                flat_cards = []
+                
+                for col in range(4):
+                    if col < len(rules):
+                        rule = rules[col]
+                        target_suit = rule.get("suit", "Spades")
+                        target_count = rule.get("count", 0)
                         
-                    # Build the code from the sequence to guarantee it matches
-                    if "elementSequence" in config_data:
-                        sequence = config_data["elementSequence"]
-                        true_combo = "".join(str(mapping.get(el, 0)) for el in sequence)
-                        config_data["correctCombination"] = true_combo
-                except Exception as e:
-                    print(f"Error correcting elemental lock: {e}")
+                        col_cards = [{"suit": target_suit, "rank": random.choice(ranks)} for _ in range(target_count)]
+                        other_suits = [s for s in suits if s != target_suit]
+                        while len(col_cards) < 4:
+                            col_cards.append({"suit": random.choice(other_suits), "rank": random.choice(ranks)})
+                        
+                        random.shuffle(col_cards)
+                        flat_cards.extend(col_cards)
+                        
+                config_data["gridCards"] = flat_cards
+
+            # 2. PYTHON GENERATES ELEMENTAL LOCK MATH
+            if "elementalMapping" in config_data:
+                mapping = config_data["elementalMapping"]
+                style = config_data.get("clueStyle", "cylinder")
+                
+                if style == "scales":
+                    config_data["elementSequence"] = sorted(mapping.keys(), key=lambda k: mapping[k])
+                else:
+                    elements = list(mapping.keys())
+                    random.shuffle(elements)
+                    config_data["elementSequence"] = elements
+                    
+                config_data["correctCombination"] = "".join(str(mapping[el]) for el in config_data["elementSequence"])
 
             if puzzle_id:
                 config_map[puzzle_id] = config_data

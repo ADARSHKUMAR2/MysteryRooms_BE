@@ -8,6 +8,7 @@ Single Responsibility: Coordinate the generation pipeline.
 from typing import Dict, Any
 from langgraph.graph import StateGraph, END
 from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 
 from ..models.mystery import MysteryConfig
 from ..validators.mystery_validator import MysteryValidator
@@ -32,30 +33,66 @@ class AIGenerator:
         
         # Initialize a list of fallback LLMs
         self.llm_chain = []
-        for model_name in settings.GROQ_MODELS:
-            self.llm_chain.append(
-                ChatGroq(
-                    api_key=settings.GROQ_API_KEY,
-                    model=model_name,
-                    temperature=settings.GROQ_TEMPERATURE,
-                    max_tokens=settings.GROQ_MAX_TOKENS,
-                    timeout=settings.GROQ_TIMEOUT,
-                    max_retries=1 # We handle retries ourselves by swapping models
-                )
-            )
-            
+        self.model_names = []
+
+        if settings.GROQ_API_KEY:
+            for model_name in settings.GROQ_MODELS:
+                self.llm_chain.append({
+                    "name": f"Groq: {model_name}",
+                    "story_llm": ChatGroq(
+                        api_key=settings.GROQ_API_KEY, model=model_name,
+                        temperature=settings.STORY_TEMPERATURE, max_tokens=settings.GROQ_MAX_TOKENS,
+                        timeout=settings.GROQ_TIMEOUT, max_retries=1
+                    ),
+                    "puzzle_llm": ChatGroq(
+                        api_key=settings.GROQ_API_KEY, model=model_name,
+                        temperature=settings.PUZZLE_TEMPERATURE, max_tokens=settings.GROQ_MAX_TOKENS,
+                        timeout=settings.GROQ_TIMEOUT, max_retries=1
+                    )
+                })
+                self.model_names.append(f"Groq: {model_name}")
+
+        # 2. Add OpenAI Models to the chain
+        if settings.OPENAI_API_KEY:
+            for model_name in settings.OPENAI_MODELS:
+                self.llm_chain.append({
+                    "name": f"OpenAI: {model_name}",
+                    "story_llm": ChatOpenAI(
+                        api_key=settings.OPENAI_API_KEY, 
+                        model=model_name, 
+                        temperature=settings.STORY_TEMPERATURE,
+                        max_tokens=settings.GROQ_MAX_TOKENS, 
+                        timeout=settings.GROQ_TIMEOUT,
+                        max_retries=1
+                    ),
+                    "puzzle_llm": ChatOpenAI(
+                        api_key=settings.OPENAI_API_KEY, 
+                        model=model_name, 
+                        temperature=settings.PUZZLE_TEMPERATURE,
+                        max_tokens=settings.GROQ_MAX_TOKENS, 
+                        timeout=settings.GROQ_TIMEOUT,
+                        max_retries=1
+                    )
+                })
+                self.model_names.append(f"OpenAI: {model_name}")
+
+        if not self.llm_chain:
+            print("⚠️ WARNING: No API keys provided. AI Generation will fail.")
+
         # We start with the first model in the chain
         self.current_model_index = 0
-        self._initialize_nodes_and_graph(self.llm_chain[self.current_model_index])
+
+        if self.llm_chain:
+            self._initialize_nodes_and_graph(self.llm_chain[self.current_model_index])
         
         self.validator = MysteryValidator()
         self.fallback_generator = MockMysteryGenerator() if settings.ENABLE_FALLBACK_GENERATOR else None
         
-    def _initialize_nodes_and_graph(self, active_llm):
-        """Re-initializes the nodes with the current active LLM"""
-        self.story_node = StoryNode(active_llm)
-        self.puzzle_node = PuzzleNode(active_llm)
-        self.clue_node = ClueNode(active_llm)
+    def _initialize_nodes_and_graph(self, active_llm_dict):
+        """Re-initializes the nodes with the current active LLMs"""
+        self.story_node = StoryNode(active_llm_dict["story_llm"])
+        self.puzzle_node = PuzzleNode(active_llm_dict["puzzle_llm"])
+        self.clue_node = ClueNode(active_llm_dict["story_llm"]) 
         self.validation_node = ValidationNode(MysteryValidator())
         self.graph = self._build_graph()
 
@@ -69,7 +106,7 @@ class AIGenerator:
 
         # Loop through our fallback chain of models
         while self.current_model_index < len(self.llm_chain):
-            current_model_name = settings.GROQ_MODELS[self.current_model_index]
+            current_model_name = self.model_names[self.current_model_index]
             print(f"🧠 Attempting generation with model: {current_model_name}")
             
             initial_state = {
@@ -99,7 +136,7 @@ class AIGenerator:
             # If we reached here, the current model failed. Move to the next one!
             self.current_model_index += 1
             if self.current_model_index < len(self.llm_chain):
-                print(f"🔄 Swapping LLM engine to {settings.GROQ_MODELS[self.current_model_index]}...")
+                print(f"🔄 Swapping LLM engine to {self.model_names[self.current_model_index]}...") 
                 self._initialize_nodes_and_graph(self.llm_chain[self.current_model_index])
                 
         # If we exhausted all models in the list...
