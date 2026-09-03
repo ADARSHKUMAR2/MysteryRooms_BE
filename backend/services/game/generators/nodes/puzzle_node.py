@@ -103,12 +103,18 @@ class PuzzleNode:
                 style = config_data.get("clueStyle", "cylinder")
                 
                 if style == "scales":
-                    config_data["elementSequence"] = sorted(mapping.keys(), key=lambda k: mapping[k])
-                else:
-                    elements = list(mapping.keys())
-                    random.shuffle(elements)
-                    config_data["elementSequence"] = elements
-                    
+                    # For scales, don't sort — use AI's narrative sequence if provided
+                    if "elementSequence" not in config_data:
+                        elements = list(mapping.keys())
+                        random.shuffle(elements)
+                        config_data["elementSequence"] = elements
+                else:  # cylinder style
+                    # For cylinder, also respect AI's sequence if already provided
+                    if "elementSequence" not in config_data:
+                        elements = list(mapping.keys())
+                        random.shuffle(elements)
+                        config_data["elementSequence"] = elements
+
                 config_data["correctCombination"] = "".join(str(mapping[el]) for el in config_data["elementSequence"])
 
             if puzzle_id:
@@ -120,6 +126,7 @@ class PuzzleNode:
             if puzzle_id in config_map:
                 puzzle["config"] = config_map[puzzle_id]
                 p_type = puzzle.get("type", "")
+
                 cfg = puzzle["config"]
                 
                 direct_hint = "Interact with the object to solve it."
@@ -128,7 +135,9 @@ class PuzzleNode:
                         style = cfg.get("clueStyle", "cylinder")
                         seq = cfg.get("elementSequence", [])
                         if style == "scales":
-                            direct_hint = "Look at the scales. Count the iron weights on each. Enter the counts in order from the LIGHTEST scale to the HEAVIEST scale."
+                            seq = cfg.get("elementSequence", [])
+                            seq_str = ", ".join(seq)
+                            direct_hint = f"Look at the scales. Count the iron weights on each pan. Enter the numbers in this order: {seq_str}."
                         else:
                             direct_hint = f"Read the story to find the element order: {', '.join(seq)}. Check the cylinder to see what number belongs to each element, then enter that code!"
                     

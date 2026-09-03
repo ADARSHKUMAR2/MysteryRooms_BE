@@ -19,7 +19,8 @@ class CluePromptBuilder:
         """Generate clue creation prompt"""
 
         puzzle_summary = "\n".join([
-            f"- {p['id']} ({p['type']}) at {p['position']}"
+            f"- {p['id']} ({p['type']}) at {p['position']}" + 
+            (f"\n  Config: {p.get('config', {})}" if p.get('config') else "")
             for p in puzzles
         ])
 

@@ -102,10 +102,10 @@ CONFIGURATION RULES BY TYPE:
   REQUIRED FIELDS in config:
   • clueStyle: Randomly choose either "cylinder" OR "scales"
   • elementalMapping: A dictionary mapping ["Fire", "Leaf", "Water", "Sun"] to 4 UNIQUE random digits between 1 and 5.
-  • elementSequence: A list of the 4 elements. If clueStyle is 'scales', sequence is strictly ordered from smallest digit to largest digit.
+  • elementSequence: A list of the 4 elements in any narrative order you choose. Do NOT sort by digit value — the order should feel natural to the story.
   • correctCombination: A string of EXACTLY 4 digits matching the sequence.
 
-  Example: {{"id": "main_lock", "config": {{"clueStyle": "scales", "elementalMapping": {{"Fire": 4, "Leaf": 1, "Water": 9, "Sun": 2}}, "elementSequence": ["Leaf", "Sun", "Fire", "Water"], "correctCombination": "1249"}}}}
+  Example: {{"id": "main_lock", "config": {{"clueStyle": "scales", "elementalMapping": {{"Fire": 4, "Leaf": 1, "Water": 9, "Sun": 2}}, "elementSequence": ["Fire", "Water", "Leaf", "Sun"], "correctCombination": "4912"}}}}
 
 
   RULES:
@@ -199,8 +199,19 @@ Example: {{"id": "sun_beam_chamber", "config": {{"requiresAlignment": true, "mir
   
   Example: {{"id": "astrolabe_puzzle", "config": {{"latitude": "N29", "longitude": "E31"}}}}
 
-- pressure_plate:
-  Example: {{"id": "floor_puzzle", "config": {{"correctPattern": [1, 2, 3, 4]}}}}
+- pressure_plate: This puzzle has exactly 5 stone floor tiles (IDs 1 through 5).
+  The `correctPattern` MUST contain ALL 5 plate IDs (1, 2, 3, 4, 5) in a random order.
+  Every plate must be stepped on exactly once.
+  
+  Plate meanings (for reference when writing clues):
+  - 1 = Pyramid
+  - 2 = Mummy
+  - 3 = Cat
+  - 4 = Coffin
+  - 5 = Khonsu
+  
+  Example: {{"id": "floor_puzzle", "config": {{"correctPattern": [3, 1, 5, 2, 4]}}}}
+
 
 - light_puzzle:
   Example: {{"id": "torch_room", "config": {{"correctTorchOrder": [3, 1, 4, 2]}}}}
