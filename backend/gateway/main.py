@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
     
     Gateway needs Firebase SDK to verify tokens in middleware.
     """
-    init_firebase()
+    # init_firebase()
     print("✅ Gateway Ready")
     yield
     print("🛑 Gateway Shutting Down")
