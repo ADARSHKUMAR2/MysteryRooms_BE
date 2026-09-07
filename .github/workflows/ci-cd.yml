@@ -27,14 +27,10 @@ jobs:
 
     - name: Setup Firebase credentials
       run: |
-        if [ -n "${FIREBASE_KEY}" ]; then
-          echo "${FIREBASE_KEY}" | base64 -d > ${{ github.workspace }}/backend/serviceAccountKey.json
+        if [ -n "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | base64 -d > ${{ github.workspace }}/backend/serviceAccountKey.json
           echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/backend/serviceAccountKey.json" >> $GITHUB_ENV
-        else
-          echo "⚠️ FIREBASE_SERVICE_ACCOUNT not set - skipping Firebase setup"
         fi
-      env:
-        FIREBASE_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         
     - name: Cache UV dependencies
       uses: actions/cache@v4
@@ -104,14 +100,10 @@ jobs:
 
     - name: Setup Firebase credentials
       run: |
-        if [ -n "${FIREBASE_KEY}" ]; then
-          echo "${FIREBASE_KEY}" | base64 -d > ${{ github.workspace }}/backend/serviceAccountKey.json
+        if [ -n "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | base64 -d > ${{ github.workspace }}/backend/serviceAccountKey.json
           echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/backend/serviceAccountKey.json" >> $GITHUB_ENV
-        else
-          echo "⚠️ FIREBASE_SERVICE_ACCOUNT not set - skipping Firebase setup"
         fi
-      env:
-        FIREBASE_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         
     - name: Cache UV dependencies
       uses: actions/cache@v4
@@ -184,19 +176,19 @@ jobs:
         docker run --rm mysteryrooms-backend:${{ github.sha }} python --version
         
     - name: Log in to Docker Hub
-      if: ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_PASSWORD != '' }}
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        if [ -n "${{ secrets.DOCKER_USERNAME }}" ] && [ -n "${{ secrets.DOCKER_PASSWORD }}" ]; then
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        fi
         
     - name: Push to Docker Hub
-      if: ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_PASSWORD != '' }}
       run: |
-        docker tag mysteryrooms-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:latest
-        docker tag mysteryrooms-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:${{ github.sha }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:latest
-        docker push ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:${{ github.sha }}
+        if [ -n "${{ secrets.DOCKER_USERNAME }}" ] && [ -n "${{ secrets.DOCKER_PASSWORD }}" ] && [ "${{ github.ref }}" = "refs/heads/main" ] && [ "${{ github.event_name }}" = "push" ]; then
+          docker tag mysteryrooms-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:latest
+          docker tag mysteryrooms-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:${{ github.sha }}
+        fi
 
   security-scan:
     name: Security Scan
