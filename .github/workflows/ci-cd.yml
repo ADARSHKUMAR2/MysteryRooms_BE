@@ -232,7 +232,7 @@ jobs:
         # Get all image digests sorted by date (oldest last) and keep the top 5
         gcloud artifacts docker images list $IMAGE_PATH \
           --sort-by="~UPDATE_TIME" \
-          --format="value(version)" | tail -n +6 | while read DIGEST; do
+          --format="value(version)" | tail -n +3 | while read DIGEST; do
             echo "Deleting image digest: $DIGEST"
             gcloud artifacts docker images delete "$IMAGE_PATH@$DIGEST" --delete-tags --quiet || true
         done
@@ -245,7 +245,7 @@ jobs:
           echo "Checking revisions for $SERVICE..."
           gcloud run revisions list --service $SERVICE --region ${{ env.GCP_REGION }} \
             --format="value(name)" \
-            --sort-by="~metadata.creationTimestamp" | tail -n +6 | while read REVISION; do
+            --sort-by="~metadata.creationTimestamp" | tail -n +3 | while read REVISION; do
               echo "Deleting revision: $REVISION"
               gcloud run revisions delete $REVISION --region ${{ env.GCP_REGION }} --quiet || true
           done
