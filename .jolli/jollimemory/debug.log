@@ -2938,3 +2938,61 @@
 [2026-09-07T11:08:41.812Z] INFO  [PrePushHook] [trace=f96d8be1c422f620540f9c8f2762baed] pre-push: recorded 1 commit(s) across 1 pushed ref(s)
 [2026-09-07T11:08:41.818Z] INFO  [PrePushHook] [trace=f96d8be1c422f620540f9c8f2762baed] Recorded 1 commit(s) for later sync — not signed in to Jolli
 [2026-09-07T11:08:41.842Z] INFO  [StorageFactory] [trace=f96d8be1c422f620540f9c8f2762baed] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-09-07T11:09:56.210Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-09-07T11:09:56.220Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=99278, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-09-07T11:09:56.239Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-09-07T11:09:56.459Z] INFO  [RepoProfile] [trace=185ed1bb696a7f29c23fafbae286bbd8] manual-disable read → false (by=manuallyDisabled, pid=99285, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-09-07T11:09:56.467Z] INFO  [PostCommitHook] [trace=185ed1bb696a7f29c23fafbae286bbd8] Detected operation: commit
+[2026-09-07T11:09:56.476Z] INFO  [PostCommitHook] [trace=185ed1bb696a7f29c23fafbae286bbd8] Enqueued: type=commit hash=566f0aa1
+[2026-09-07T11:09:56.476Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Launching background worker
+[2026-09-07T11:09:56.477Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Background worker spawned (PID: 99290)
+[2026-09-07T11:09:56.478Z] INFO  [EnsureGlobalDaemon] [trace=185ed1bb696a7f29c23fafbae286bbd8] spawned global daemon ensure helper (pid 99291)
+[2026-09-07T11:09:56.572Z] INFO  [RepoProfile] [trace=185ed1bb696a7f29c23fafbae286bbd8] manual-disable read → false (by=manuallyDisabled, pid=99290, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-09-07T11:09:56.590Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] === Queue worker started === node=24.13.0 kind=vscode-plugin source=vscode pkgVer=0.99.17 cliVer=0.99.17 dist=/Users/adarsh/.vscode/extensions/jolli.jollimemory-vscode-0.99.17/dist
+[2026-09-07T11:09:56.595Z] INFO  [StorageFactory] [trace=185ed1bb696a7f29c23fafbae286bbd8] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-09-07T11:09:56.648Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Processing queue entry: type=commit hash=566f0aa1
+[2026-09-07T11:09:56.657Z] INFO  [GitOps] [trace=185ed1bb696a7f29c23fafbae286bbd8] Commit 566f0aa1: added in shell commands the secrets
+[2026-09-07T11:09:56.657Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Commit: 566f0aa1 - added in shell commands the secrets (8ms)
+[2026-09-07T11:09:56.688Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Discovered 2 Cline CLI session(s)
+[2026-09-07T11:09:56.742Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Git diff: 6 files changed, +99 -20 (28ms)
+[2026-09-07T11:09:56.764Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-09-07T11:09:56.764Z] INFO  [Summarizer] [trace=185ed1bb696a7f29c23fafbae286bbd8] Generating summary for commit 566f0aa1
+[2026-09-07T11:09:56.764Z] INFO  [Summarizer] [trace=185ed1bb696a7f29c23fafbae286bbd8] Context: transcript=0, files=6, lines=99+20
+[2026-09-07T11:09:56.764Z] WARN  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-09-07T11:09:58.765Z] INFO  [Summarizer] [trace=185ed1bb696a7f29c23fafbae286bbd8] Generating summary for commit 566f0aa1
+[2026-09-07T11:09:58.765Z] INFO  [Summarizer] [trace=185ed1bb696a7f29c23fafbae286bbd8] Context: transcript=0, files=6, lines=99+20
+[2026-09-07T11:09:58.765Z] ERROR [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-09-07T11:09:58.766Z] WARN  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Saving summary with empty topics + llm-failed marker for commit 566f0aa1
+[2026-09-07T11:09:58.766Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] API summary generated (2.0s)
+[2026-09-07T11:09:58.766Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-09-07T11:09:58.766Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Plan association: detected 0 slug(s) from transcripts: []
+[2026-09-07T11:09:58.766Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-09-07T11:09:58.766Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Note association: detected 0 note(s): []
+[2026-09-07T11:09:58.766Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Reference association: detected 0 ref(s) for branch main
+[2026-09-07T11:09:58.767Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Summary built for 566f0aa1: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-09-07T11:09:58.836Z] INFO  [MetadataManager] [trace=185ed1bb696a7f29c23fafbae286bbd8] Manifest updated: main/added-in-shell-commands-the-secrets-566f0aa1.md (commit)
+[2026-09-07T11:09:58.837Z] INFO  [FolderStorage] [trace=185ed1bb696a7f29c23fafbae286bbd8] Markdown generated: main/added-in-shell-commands-the-secrets-566f0aa1.md
+[2026-09-07T11:09:58.837Z] INFO  [FolderStorage] [trace=185ed1bb696a7f29c23fafbae286bbd8] Wrote 3 files, deleted 0 (Add summary for 566f0aa1: added in shell commands the secrets)
+[2026-09-07T11:09:58.837Z] INFO  [SummaryStore] [trace=185ed1bb696a7f29c23fafbae286bbd8] Summary stored successfully for commit 566f0aa1
+[2026-09-07T11:09:58.840Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Summary stored successfully for commit 566f0aa1 (72ms, 0 plans, 0 notes, 0 references)
+[2026-09-07T11:09:58.840Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] === Pipeline completed in 2.2s ===
+[2026-09-07T11:09:58.840Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] === Summary content (0 topics) ===
+[2026-09-07T11:09:58.841Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] Processed 1 queue entries
+[2026-09-07T11:09:58.842Z] INFO  [PushExecutor] [trace=185ed1bb696a7f29c23fafbae286bbd8] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-09-07T11:09:58.843Z] INFO  [PushExecutor] [trace=185ed1bb696a7f29c23fafbae286bbd8] processPushPending(post-queue): 10 pending entr(ies) (filtered to 1 hash(es))
+[2026-09-07T11:09:58.847Z] INFO  [PushExecutor] [trace=185ed1bb696a7f29c23fafbae286bbd8] processPushPending(post-queue): not signed in — keeping 10 entries for later
+[2026-09-07T11:09:58.869Z] INFO  [GitOps] [trace=185ed1bb696a7f29c23fafbae286bbd8] Commit 566f0aa1: added in shell commands the secrets
+[2026-09-07T11:09:58.906Z] INFO  [StorageFactory] [trace=185ed1bb696a7f29c23fafbae286bbd8] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-09-07T11:09:58.939Z] INFO  [QueueWorker] [trace=185ed1bb696a7f29c23fafbae286bbd8] === Queue worker finished ===
+[2026-09-07T11:09:58.939Z] INFO  [SessionStartHook] [trace=185ed1bb696a7f29c23fafbae286bbd8] Briefing cache not warmed — nothing to brief on this branch
+[2026-09-07T11:09:58.941Z] INFO  [SessionSync] [trace=185ed1bb696a7f29c23fafbae286bbd8] session sync: not uploading — no API key configured
+[2026-09-07T11:09:59.087Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-07T11:09:59.088Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-07T11:09:59.088Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-07T11:09:59.088Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-07T11:10:00.238Z] INFO  [PrePushHook] [trace=3613038a814ec34e94748357c7bad7b1] pre-push hook: remote=origin budget=3000ms
+[2026-09-07T11:10:00.240Z] INFO  [RepoProfile] [trace=3613038a814ec34e94748357c7bad7b1] manual-disable read → false (by=manuallyDisabled, pid=99660, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-09-07T11:10:00.249Z] INFO  [PushPendingStore] [trace=3613038a814ec34e94748357c7bad7b1] Enqueued 1 new push-pending entries (branch=main)
+[2026-09-07T11:10:00.249Z] INFO  [PrePushHook] [trace=3613038a814ec34e94748357c7bad7b1] pre-push: recorded 1 commit(s) across 1 pushed ref(s)
+[2026-09-07T11:10:00.254Z] INFO  [PrePushHook] [trace=3613038a814ec34e94748357c7bad7b1] Recorded 1 commit(s) for later sync — not signed in to Jolli
+[2026-09-07T11:10:00.266Z] INFO  [StorageFactory] [trace=3613038a814ec34e94748357c7bad7b1] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
