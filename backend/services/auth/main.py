@@ -8,7 +8,7 @@ import sys
 from backend.services.auth.config.firebase import init_firebase  
 from backend.shared.exceptions import register_exception_handlers
 from backend.services.auth.routes import auth_routes
-load_dotenv(find_dotenv())
+load_dotenv(os.getenv("DOTENV_PATH", find_dotenv()))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

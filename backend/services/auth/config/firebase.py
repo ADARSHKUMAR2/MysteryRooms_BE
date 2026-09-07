@@ -20,14 +20,18 @@ def init_firebase():
         pass
     
     # Path to your Firebase service account key
-    # Download this from Firebase Console → Project Settings → Service Accounts
+    # In production (Cloud Run), this is mounted from Secret Manager via FIREBASE_CREDENTIALS_PATH
+    # In local dev, it defaults to serviceAccountKey.json in the auth service directory
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    cred_path = os.path.join(current_dir, "..", "serviceAccountKey.json")
-    
+    default_cred_path = os.path.join(current_dir, "..", "serviceAccountKey.json")
+    cred_path = os.getenv("FIREBASE_CREDENTIALS_PATH", default_cred_path)
+
     if not os.path.exists(cred_path):
         raise FileNotFoundError(
             f"❌ Firebase service account key not found at: {cred_path}\n"
-            f"Download it from: Firebase Console → Project Settings → Service Accounts"
+            f"Expected location: {cred_path}\n"
+            f"Set FIREBASE_CREDENTIALS_PATH env var or download serviceAccountKey.json from:\n"
+            f"Firebase Console → Project Settings → Service Accounts"
         )
     
     # Initialize Firebase with the service account credentials

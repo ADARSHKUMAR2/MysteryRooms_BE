@@ -1,14 +1,16 @@
-from fastapi import FastAPI
+import os
+from dotenv import load_dotenv, find_dotenv
 from contextlib import asynccontextmanager
+from fastapi import FastAPI
+
+load_dotenv(os.getenv("DOTENV_PATH", find_dotenv()))
+
 from backend.services.game.routes import game_routes, session_routes
 from backend.services.game.config.db import init_game_db
 from fastapi.middleware.cors import CORSMiddleware 
 import uvicorn
 from backend.shared.exceptions import register_exception_handlers
-from dotenv import load_dotenv, find_dotenv
-import os
 
-load_dotenv(find_dotenv())
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
