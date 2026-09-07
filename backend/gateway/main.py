@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from backend.gateway.routes import proxy_routes
-from backend.gateway.middlewares.middleware import FirebaseAuthMiddleware
-from backend.services.auth.config.firebase import init_firebase  # ← Gateway needs Firebase too!
 from backend.shared.exceptions import register_exception_handlers
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -18,7 +16,6 @@ async def lifespan(app: FastAPI):
     
     Gateway needs Firebase SDK to verify tokens in middleware.
     """
-    # init_firebase()
     print("✅ Gateway Ready")
     yield
     print("🛑 Gateway Shutting Down")
@@ -28,10 +25,6 @@ app = FastAPI(
     title="Mystery Rooms API Gateway",
     description="Central entry point for Unity client"
 )
-
-# Add Firebase authentication middleware
-# This runs BEFORE routes - validates tokens first
-app.add_middleware(FirebaseAuthMiddleware)
 
 register_exception_handlers(app, "Gateway")
 # Register proxy routes

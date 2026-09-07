@@ -15,8 +15,8 @@ class ProxyController:
         self.proxy = ServiceProxy()
         
         # Service URLs from environment variables
-        self.auth_service_url = os.getenv("AUTH_SERVICE_URL", "http://localhost:8001")
-        self.game_service_url = os.getenv("GAME_SERVICE_URL", "http://localhost:8002")
+        self.auth_service_url = os.getenv("AUTH_SERVICE_URL", "http://localhost:8001").rstrip('/')
+        self.game_service_url = os.getenv("GAME_SERVICE_URL", "http://localhost:8002").rstrip('/')
     
     async def route_to_auth_service(self, request: Request, path: str):
         """

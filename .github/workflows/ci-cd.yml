@@ -196,8 +196,17 @@ jobs:
           
     - name: Deploy Gateway to Cloud Run
       run: |
+        echo "Fetching service URLs..."
         AUTH_URL=$(gcloud run services describe mysteryrooms-auth --region ${{ env.GCP_REGION }} --format 'value(status.url)')
         GAME_URL=$(gcloud run services describe mysteryrooms-game --region ${{ env.GCP_REGION }} --format 'value(status.url)')
+        
+        echo "Detected AUTH_URL: $AUTH_URL"
+        echo "Detected GAME_URL: $GAME_URL"
+        
+        if [ -z "$AUTH_URL" ]; then
+          echo "❌ ERROR: AUTH_URL is empty! Auth service may not have deployed correctly."
+          exit 1
+        fi
         
         gcloud run deploy mysteryrooms-gateway \
           --image ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
