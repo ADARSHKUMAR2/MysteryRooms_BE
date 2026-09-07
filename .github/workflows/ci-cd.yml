@@ -7,9 +7,9 @@ on:
     branches: [ main, develop ]
 
 env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCP_REGION: ${{ secrets.GCP_REGION }}
-  IMAGE_NAME: mysteryrooms-backend
+  GCP_PROJECT_ID: mysteryai-507615
+  GCP_REGION: asia-south1
+  IMAGE_NAME: mysteryrooms-repo/backend
 
 jobs:
   lint:
@@ -143,65 +143,75 @@ jobs:
       
     - name: Configure Docker to use gcloud
       run: |
-        gcloud auth configure-docker
+        gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev
         
     - name: Build Docker image
       working-directory: ./backend
       run: |
-        docker build -t gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
-        docker build -t gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest .
+        docker build --platform linux/amd64 \
+          -t ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          -t ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest \
+          .
         
-    - name: Push to GCR
+    - name: Push to Artifact Registry
       run: |
-        docker push gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-        docker push gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
+        docker push ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        docker push ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
         
-    - name: Deploy Gateway to Cloud Run
-      run: |
-        gcloud run deploy mysteryrooms-gateway \
-          --image gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-          --platform managed \
-          --region ${{ env.GCP_REGION }} \
-          --allow-unauthenticated \
-          --port 8000 \
-          --set-env-vars "GATEWAY_PORT=8000,AUTH_SERVICE_PORT=8001,GAME_SERVICE_PORT=8002" \
-          --set-secrets "MONGODB_URI=MONGODB_URI:latest,GROQ_API_KEY=GROQ_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,LANGCHAIN_API_KEY=LANGCHAIN_API_KEY:latest,FIREBASE_SERVICE_ACCOUNT=FIREBASE_SERVICE_ACCOUNT:latest" \
-          --memory 1Gi \
-          --cpu 1 \
-          --timeout 300 \
-          --max-instances 10 \
-          --quiet
-          
     - name: Deploy Auth Service to Cloud Run
       run: |
         gcloud run deploy mysteryrooms-auth \
-          --image gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-          --platform managed \
-          --region ${{ env.GCP_REGION }} \
-          --no-allow-unauthenticated \
+          --image ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          --command uv \
+          --args run,uvicorn,services.auth.main:app,--host,0.0.0.0,--port,8001 \
           --port 8001 \
-          --set-env-vars "AUTH_SERVICE_PORT=8001" \
-          --set-secrets "MONGODB_URI=MONGODB_URI:latest,FIREBASE_SERVICE_ACCOUNT=FIREBASE_SERVICE_ACCOUNT:latest" \
+          --region ${{ env.GCP_REGION }} \
+          --project ${{ env.GCP_PROJECT_ID }} \
+          --allow-unauthenticated \
           --memory 1Gi \
           --cpu 1 \
           --timeout 300 \
           --max-instances 10 \
+          --set-env-vars AUTH_SERVICE_PORT=8001,DOTENV_PATH=/secrets/py_env_file,FIREBASE_CREDENTIALS_PATH=/secrets/firebase/service-account.json \
+          --set-secrets /secrets/py_env_file=py_env_file:latest,/secrets/firebase/service-account.json=firebase-service-account:latest \
           --quiet
           
     - name: Deploy Game Service to Cloud Run
       run: |
         gcloud run deploy mysteryrooms-game \
-          --image gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
-          --platform managed \
-          --region ${{ env.GCP_REGION }} \
-          --no-allow-unauthenticated \
+          --image ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          --command uv \
+          --args run,uvicorn,services.game.main:app,--host,0.0.0.0,--port,8002 \
           --port 8002 \
-          --set-env-vars "GAME_SERVICE_PORT=8002" \
-          --set-secrets "MONGODB_URI=MONGODB_URI:latest,GROQ_API_KEY=GROQ_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,LANGCHAIN_API_KEY=LANGCHAIN_API_KEY:latest" \
-          --memory 2Gi \
-          --cpu 2 \
+          --region ${{ env.GCP_REGION }} \
+          --project ${{ env.GCP_PROJECT_ID }} \
+          --allow-unauthenticated \
+          --memory 1Gi \
+          --cpu 1 \
           --timeout 300 \
           --max-instances 10 \
+          --set-env-vars GAME_SERVICE_PORT=8002,DOTENV_PATH=/secrets/py_env_file,LANGCHAIN_TRACING_V2=true,LANGCHAIN_ENDPOINT=https://api.smith.langchain.com,LANGCHAIN_PROJECT=AI_MysteryRooms \
+          --set-secrets /secrets/py_env_file=py_env_file:latest \
+          --quiet
+          
+    - name: Deploy Gateway to Cloud Run
+      run: |
+        AUTH_URL=$(gcloud run services describe mysteryrooms-auth --region ${{ env.GCP_REGION }} --format 'value(status.url)')
+        GAME_URL=$(gcloud run services describe mysteryrooms-game --region ${{ env.GCP_REGION }} --format 'value(status.url)')
+        
+        gcloud run deploy mysteryrooms-gateway \
+          --image ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          --command uv \
+          --args run,uvicorn,gateway.main:app,--host,0.0.0.0,--port,8000 \
+          --port 8000 \
+          --region ${{ env.GCP_REGION }} \
+          --project ${{ env.GCP_PROJECT_ID }} \
+          --allow-unauthenticated \
+          --memory 1Gi \
+          --cpu 1 \
+          --timeout 300 \
+          --max-instances 10 \
+          --set-env-vars GATEWAY_PORT=8000,AUTH_SERVICE_URL=$AUTH_URL,GAME_SERVICE_URL=$GAME_URL \
           --quiet
           
     - name: Get Service URLs
