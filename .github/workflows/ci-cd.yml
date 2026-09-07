@@ -5,7 +5,11 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
-  workflow_dispatch:
+
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_REGION: ${{ secrets.GCP_REGION }}
+  IMAGE_NAME: mysteryrooms-backend
 
 jobs:
   lint:
@@ -25,13 +29,6 @@ jobs:
       run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
         echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-
-    - name: Setup Firebase credentials
-      run: |
-        if [ -n "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | base64 -d > ${{ github.workspace }}/backend/serviceAccountKey.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/backend/serviceAccountKey.json" >> $GITHUB_ENV
-        fi
         
     - name: Cache UV dependencies
       uses: actions/cache@v4
@@ -98,13 +95,6 @@ jobs:
       run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
         echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-
-    - name: Setup Firebase credentials
-      run: |
-        if [ -n "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | base64 -d > ${{ github.workspace }}/backend/serviceAccountKey.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/backend/serviceAccountKey.json" >> $GITHUB_ENV
-        fi
         
     - name: Cache UV dependencies
       uses: actions/cache@v4
@@ -127,69 +117,99 @@ jobs:
       env:
         MONGODB_URI: mongodb://localhost:27017/test_db
         MONGO_DB_NAME: test_db
-        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
-        LANGCHAIN_TRACING_V2: false
         GATEWAY_PORT: 8000
         AUTH_SERVICE_PORT: 8001
         GAME_SERVICE_PORT: 8002
       run: |
         uv run pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term -v || echo "No tests found yet"
-        
-    - name: Upload coverage reports
-      uses: codecov/codecov-action@v4
-      if: always()
-      continue-on-error: true
-      with:
-        files: ./backend/coverage.xml
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
 
-  build:
-    name: Build Docker Image
+  build-and-deploy:
+    name: Build & Deploy to Cloud Run
     runs-on: ubuntu-latest
     needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-      
-    - name: Cache Docker layers
-      uses: actions/cache@v4
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
       with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
-          
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      
+    - name: Configure Docker to use gcloud
+      run: |
+        gcloud auth configure-docker
+        
     - name: Build Docker image
       working-directory: ./backend
       run: |
-        docker build -t mysteryrooms-backend:${{ github.sha }} .
+        docker build -t gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        docker build -t gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest .
         
-    - name: Test Docker image
+    - name: Push to GCR
       run: |
-        docker run --rm mysteryrooms-backend:${{ github.sha }} python --version
+        docker push gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        docker push gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest
         
-    - name: Log in to Docker Hub
+    - name: Deploy Gateway to Cloud Run
       run: |
-        if [ -n "${{ secrets.DOCKER_USERNAME }}" ] && [ -n "${{ secrets.DOCKER_PASSWORD }}" ]; then
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-        fi
-        
-    - name: Push to Docker Hub
+        gcloud run deploy mysteryrooms-gateway \
+          --image gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          --platform managed \
+          --region ${{ env.GCP_REGION }} \
+          --allow-unauthenticated \
+          --port 8000 \
+          --set-env-vars "GATEWAY_PORT=8000,AUTH_SERVICE_PORT=8001,GAME_SERVICE_PORT=8002" \
+          --set-secrets "MONGODB_URI=MONGODB_URI:latest,GROQ_API_KEY=GROQ_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,LANGCHAIN_API_KEY=LANGCHAIN_API_KEY:latest,FIREBASE_SERVICE_ACCOUNT=FIREBASE_SERVICE_ACCOUNT:latest" \
+          --memory 1Gi \
+          --cpu 1 \
+          --timeout 300 \
+          --max-instances 10 \
+          --quiet
+          
+    - name: Deploy Auth Service to Cloud Run
       run: |
-        if [ -n "${{ secrets.DOCKER_USERNAME }}" ] && [ -n "${{ secrets.DOCKER_PASSWORD }}" ] && [ "${{ github.ref }}" = "refs/heads/main" ] && [ "${{ github.event_name }}" = "push" ]; then
-          docker tag mysteryrooms-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:latest
-          docker tag mysteryrooms-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/mysteryrooms-backend:${{ github.sha }}
-        fi
+        gcloud run deploy mysteryrooms-auth \
+          --image gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          --platform managed \
+          --region ${{ env.GCP_REGION }} \
+          --no-allow-unauthenticated \
+          --port 8001 \
+          --set-env-vars "AUTH_SERVICE_PORT=8001" \
+          --set-secrets "MONGODB_URI=MONGODB_URI:latest,FIREBASE_SERVICE_ACCOUNT=FIREBASE_SERVICE_ACCOUNT:latest" \
+          --memory 1Gi \
+          --cpu 1 \
+          --timeout 300 \
+          --max-instances 10 \
+          --quiet
+          
+    - name: Deploy Game Service to Cloud Run
+      run: |
+        gcloud run deploy mysteryrooms-game \
+          --image gcr.io/${{ env.GCP_PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          --platform managed \
+          --region ${{ env.GCP_REGION }} \
+          --no-allow-unauthenticated \
+          --port 8002 \
+          --set-env-vars "GAME_SERVICE_PORT=8002" \
+          --set-secrets "MONGODB_URI=MONGODB_URI:latest,GROQ_API_KEY=GROQ_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,LANGCHAIN_API_KEY=LANGCHAIN_API_KEY:latest" \
+          --memory 2Gi \
+          --cpu 2 \
+          --timeout 300 \
+          --max-instances 10 \
+          --quiet
+          
+    - name: Get Service URLs
+      run: |
+        echo "🚀 Deployment Complete!"
+        echo "Gateway URL: $(gcloud run services describe mysteryrooms-gateway --region ${{ env.GCP_REGION }} --format 'value(status.url)')"
+        echo "Auth URL: $(gcloud run services describe mysteryrooms-auth --region ${{ env.GCP_REGION }} --format 'value(status.url)')"
+        echo "Game URL: $(gcloud run services describe mysteryrooms-game --region ${{ env.GCP_REGION }} --format 'value(status.url)')"
 
   security-scan:
     name: Security Scan
