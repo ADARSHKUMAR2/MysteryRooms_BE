@@ -3771,3 +3771,21 @@
 [2026-09-09T15:00:06.496Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
 [2026-09-09T15:00:06.882Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=2, summaries=36, codex=false/undefined, gemini=true/true, enabledWorktrees=1, opencode=false/undefined, cursor=true/true, copilot=false/true, copilotChat=true, cline=true/true
 [2026-09-09T15:00:06.886Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-09-09T16:14:52.464Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: merge) ===
+[2026-09-09T16:14:52.471Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=91515, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-09-09T16:14:52.482Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-09-09T16:14:53.528Z] INFO  [PostMergeHook] [trace=c3c21cbecf978ab5f551272c29a6f46e] Post-merge hook triggered
+[2026-09-09T16:14:53.531Z] INFO  [RepoProfile] [trace=c3c21cbecf978ab5f551272c29a6f46e] manual-disable read → false (by=manuallyDisabled, pid=91545, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-09-09T16:14:53.538Z] INFO  [PostMergeHook] [trace=c3c21cbecf978ab5f551272c29a6f46e] Merge detected but no branch names parsed -- enqueuing repo-wide ingest anyway
+[2026-09-09T16:14:53.539Z] INFO  [PostMergeHook] [trace=c3c21cbecf978ab5f551272c29a6f46e] No API key configured -- skipping compile enqueue
+[2026-09-09T16:15:00.528Z] INFO  [PrePushHook] [trace=0042bbb1aaaebc1f4d778ece45c5283a] pre-push hook: remote=origin budget=3000ms
+[2026-09-09T16:15:00.529Z] INFO  [RepoProfile] [trace=0042bbb1aaaebc1f4d778ece45c5283a] manual-disable read → false (by=manuallyDisabled, pid=91656, cwd=/Users/adarsh/MysteryRooms_BE, profile=/Users/adarsh/MysteryRooms_BE/.jolli/jollimemory/profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-18T08:27:10.665Z)
+[2026-09-09T16:15:00.540Z] INFO  [PushPendingStore] [trace=0042bbb1aaaebc1f4d778ece45c5283a] Enqueued 1 new push-pending entries (branch=main)
+[2026-09-09T16:15:00.540Z] INFO  [PrePushHook] [trace=0042bbb1aaaebc1f4d778ece45c5283a] pre-push: recorded 1 commit(s) across 1 pushed ref(s)
+[2026-09-09T16:15:00.545Z] INFO  [PrePushHook] [trace=0042bbb1aaaebc1f4d778ece45c5283a] Recorded 1 commit(s) for later sync — not signed in to Jolli
+[2026-09-09T16:15:00.565Z] INFO  [StorageFactory] [trace=0042bbb1aaaebc1f4d778ece45c5283a] StorageFactory.create: route=cutover, projectPath=/Users/adarsh/MysteryRooms_BE
+[2026-09-09T16:19:19.370Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
+[2026-09-09T16:19:19.481Z] INFO  [SummaryStore] Tree hash match: 050f9070 → b4915336 (treeHash: f892bb6b)
+[2026-09-09T16:19:19.550Z] INFO  [FolderStorage] Wrote 1 files, deleted 0 (Add 1 tree hash alias(es))
+[2026-09-09T16:19:19.551Z] INFO  [commits] Tree hash aliases found — panel refresh recommended
+[2026-09-09T16:19:20.082Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"694d6acc","author":"Adarsh"}
