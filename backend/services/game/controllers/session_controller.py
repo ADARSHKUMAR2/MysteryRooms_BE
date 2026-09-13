@@ -2,7 +2,9 @@ from fastapi import HTTPException
 from ..models.game_session import (
     GameSessionDocument, GameSession, StartSessionRequest, 
     UpdateSessionRequest, CompleteSessionRequest, GameStatus,
-    PlayerProgress, PuzzleAttempt
+    PlayerProgress, PuzzleAttempt,
+    WinningScreenData, ScoreBreakdown, RewardsData, 
+    PlayerPerformance, SessionStatistics, MysteryInfo
 )
 from ..models.player_analytics import PlayerStatsDocument
 from ..models.mystery import MysteryDocument
@@ -10,6 +12,7 @@ from datetime import datetime
 import uuid
 from typing import List
 from backend.services.auth.models.user import User
+from ..utils.victory_messages import VictoryMessageGenerator
 
 class SessionController:
     """Controller for game session operations"""
@@ -84,6 +87,24 @@ class SessionController:
                         solved=True
                     )
                 )
+
+                # ✨ NEW: Check if this puzzle triggers victory
+                is_victory = await self._check_victory_condition(session, request.puzzle_solved)
+                
+                if is_victory:
+                    # Auto-complete the session
+                    print(f"🎉 Victory condition met for session {session.session_id}!")
+                    session.status = GameStatus.COMPLETED
+                    session.completed_at = datetime.utcnow()
+                    
+                    # Calculate completion time
+                    if session.started_at:
+                        session.completion_time_seconds = int(
+                            (session.completed_at - session.started_at).total_seconds()
+                        )
+                    
+                    # Update player stats
+                    await self._update_player_stats(session)
         
         if request.puzzle_attempted:
             # Record attempt
@@ -218,6 +239,236 @@ class SessionController:
         except Exception as e:
             print(f"⚠️ Failed to fetch username for {user_id}: {e}")
             return f"Player_{user_id[:8]}"
+
+    async def _check_victory_condition(self, session: GameSessionDocument, puzzle_id: str) -> bool:
+        """
+        Check if solving this puzzle triggers victory
+        
+        Args:
+            session: The game session
+            puzzle_id: ID of the puzzle just solved
+            
+        Returns:
+            True if this puzzle unlocks victory
+        """
+        # Get the mystery to check puzzle configuration
+        mystery = await MysteryDocument.find_one(
+            MysteryDocument.mystery_id == session.mystery_id
+        )
+        
+        if not mystery:
+            return False
+        
+        # Find the puzzle and check if it unlocks victory
+        for puzzle in mystery.puzzles:
+            if puzzle.id == puzzle_id:
+                if "victory" in puzzle.unlocks:
+                    return True
+        
+        return False
+    
+    async def get_victory_data(self, session_id: str) -> WinningScreenData:
+        """
+        Generate complete winning screen data for a completed session
+        
+        Args:
+            session_id: The session ID
+            
+        Returns:
+            Complete WinningScreenData with all statistics and rewards
+            
+        Raises:
+            HTTPException: If session not found or not completed
+        """
+        # Find session
+        session = await GameSessionDocument.find_one(
+            GameSessionDocument.session_id == session_id
+        )
+        if not session:
+            raise HTTPException(status_code=404, detail="Session not found")
+        
+        # Verify session is completed
+        if session.status != GameStatus.COMPLETED:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Session is not completed. Current status: {session.status}"
+            )
+        
+        # Get mystery information
+        mystery = await MysteryDocument.find_one(
+            MysteryDocument.mystery_id == session.mystery_id
+        )
+        if not mystery:
+            raise HTTPException(status_code=404, detail="Mystery not found")
+        
+        # Calculate statistics
+        completion_time = session.completion_time_seconds or 0
+        time_remaining = max(0, session.time_limit_seconds - completion_time)
+        
+        # Format completion time as MM:SS
+        minutes = completion_time // 60
+        seconds = completion_time % 60
+        formatted_time = f"{minutes:02d}:{seconds:02d}"
+        
+        # Calculate success rate
+        total_attempts = len(session.puzzle_attempts)
+        successful_attempts = len([a for a in session.puzzle_attempts if a.solved])
+        success_rate = (successful_attempts / total_attempts * 100) if total_attempts > 0 else 100.0
+        
+        # Generate victory messages
+        primary_message = VictoryMessageGenerator.generate_victory_message(
+            theme=mystery.theme,
+            difficulty=mystery.difficulty,
+            completion_time_seconds=completion_time,
+            time_limit_seconds=session.time_limit_seconds,
+            hints_used=session.total_hints_used,
+            player_count=len(session.players)
+        )
+        
+        secondary_message = VictoryMessageGenerator.generate_multiplayer_message(
+            player_count=len(session.players),
+            top_contributor=session.players[0].username if session.players else "Unknown"
+        )
+        
+        rank_title = VictoryMessageGenerator.get_rank_title(
+            completion_time=completion_time,
+            time_limit=session.time_limit_seconds,
+            hints_used=session.total_hints_used,
+            difficulty=mystery.difficulty
+        )
+        
+        # Calculate score breakdown
+        base_score = 1000
+        
+        # Time bonus: more time remaining = higher bonus
+        time_bonus = int(time_remaining * 0.5)  # 0.5 points per second remaining
+        
+        # Difficulty multiplier
+        difficulty_multiplier = 1.0 + (mystery.difficulty - 1) * 0.25  # 1.0 to 2.0
+        
+        # Hint penalty
+        hint_penalty = session.total_hints_used * 50
+        
+        # Team bonus for multiplayer
+        team_bonus = 100 * (len(session.players) - 1) if len(session.players) > 1 else 0
+        
+        # Calculate final score
+        score_before_multiplier = base_score + time_bonus - hint_penalty + team_bonus
+        final_score = int(score_before_multiplier * difficulty_multiplier)
+        
+        score_breakdown = ScoreBreakdown(
+            base_score=base_score,
+            time_bonus=time_bonus,
+            difficulty_multiplier=difficulty_multiplier,
+            hint_penalty=-hint_penalty,
+            team_bonus=team_bonus,
+            final_score=final_score
+        )
+        
+        # Calculate rewards
+        coins_earned = 50  # Base reward
+        if session.total_hints_used == 0:
+            coins_earned += 25  # Bonus for no hints
+        if completion_time < session.time_limit_seconds * 0.6:
+            coins_earned += 30  # Speed bonus
+        
+        xp_earned = final_score // 10  # XP based on score
+        
+        # Detect achievements
+        achievements = []
+        if session.total_hints_used == 0:
+            achievements.append("No Hints Master")
+        if completion_time < session.time_limit_seconds * 0.5:
+            achievements.append("Speed Demon")
+        if len(session.players) >= 3:
+            achievements.append("Team Player")
+        
+        rewards = RewardsData(
+            coins_earned=coins_earned,
+            xp_earned=xp_earned,
+            achievements=achievements,
+            badges=[]
+        )
+        
+        # Generate player performances
+        player_performances = []
+        total_puzzles_solved = sum(len(p.puzzles_solved) for p in session.players)
+        
+        for player in session.players:
+            contribution = (len(player.puzzles_solved) / total_puzzles_solved * 100) if total_puzzles_solved > 0 else 0
+            
+            player_perf = PlayerPerformance(
+                user_id=player.user_id,
+                username=player.username,
+                puzzles_solved=len(player.puzzles_solved),
+                puzzles_attempted=len(player.puzzles_attempted),
+                hints_used=player.hints_used,
+                contribution_percentage=round(contribution, 1),
+                mvp=False  # Will set MVP below
+            )
+            player_performances.append(player_perf)
+        
+        # Mark MVP (player with highest contribution)
+        if player_performances:
+            mvp = max(player_performances, key=lambda p: p.contribution_percentage)
+            mvp.mvp = True
+        
+        # Check if this is a new personal record
+        is_new_record = False
+        previous_best = None
+        
+        if session.players:
+            first_player = session.players[0]
+            stats = await PlayerStatsDocument.find_one(
+                {"user_id": first_player.user_id}
+            )
+            if stats and stats.fastest_escape_time_seconds:
+                previous_best = stats.fastest_escape_time_seconds
+                if completion_time < previous_best:
+                    is_new_record = True
+            else:
+                is_new_record = True  # First completion
+        
+        # Build mystery info
+        mystery_info = MysteryInfo(
+            mystery_id=mystery.mystery_id,
+            theme=mystery.theme,
+            difficulty=mystery.difficulty,
+            room=mystery.room,
+            objective=mystery.objective
+        )
+        
+        # Build statistics
+        statistics = SessionStatistics(
+            completion_time_seconds=completion_time,
+            completion_time_formatted=formatted_time,
+            time_limit_seconds=session.time_limit_seconds,
+            time_remaining_seconds=time_remaining,
+            puzzles_solved=len(session.puzzles_solved),
+            total_puzzles=len(mystery.puzzles),
+            hints_used=session.total_hints_used,
+            puzzle_attempts=total_attempts,
+            success_rate=round(success_rate, 1)
+        )
+        
+        # Build complete winning screen data
+        winning_data = WinningScreenData(
+            victory=True,
+            victory_message=primary_message,
+            secondary_message=secondary_message,
+            rank_title=rank_title,
+            session_id=session_id,
+            mystery=mystery_info,
+            statistics=statistics,
+            score=score_breakdown,
+            rewards=rewards,
+            players=player_performances,
+            completed_at=session.completed_at or datetime.utcnow(),
+            is_new_record=is_new_record,
+            previous_best_time=previous_best
+        )
+        
+        return winning_data
 
     async def _update_player_stats(self, session: GameSessionDocument):
         """Update player statistics after game completion"""

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from ..controllers.session_controller import SessionController
 from ..models.game_session import (
-    StartSessionRequest, UpdateSessionRequest, CompleteSessionRequest, GameSession
+    StartSessionRequest, UpdateSessionRequest, CompleteSessionRequest, GameSession, WinningScreenData
 )
 
 router = APIRouter(prefix="/game", tags=["Session"])
@@ -36,3 +36,31 @@ async def get_player_sessions(user_id: str, limit: int = 20):
 async def join_game_session(session_id: str, request: dict):
     """Join an existing game session"""
     return await session_controller.join_session(session_id, request)
+
+@router.get("/sessions/{session_id}/victory", response_model=WinningScreenData)
+async def get_victory_screen(session_id: str):
+    """
+    Get winning screen data for a completed session
+    
+    This endpoint returns comprehensive victory data including:
+    - Victory messages
+    - Complete statistics
+    - Score breakdown
+    - Rewards earned
+    - Player performances
+    - Achievements unlocked
+    
+    The Unity client should call this after the final puzzle is solved
+    to display the winning screen UI.
+    
+    **Parameters:**
+    - **session_id**: The game session ID
+    
+    **Returns:**
+    Complete WinningScreenData with all victory information
+    
+    **Raises:**
+    - 404: Session not found
+    - 400: Session not completed yet
+    """
+    return await session_controller.get_victory_data(session_id)
